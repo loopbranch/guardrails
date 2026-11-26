@@ -10,6 +10,7 @@ import { noArrayProperty } from './no-array-property.mjs';
 import { noArrayMutationInIteration } from './no-array-mutation-in-iteration.mjs';
 import { arrayCopySpread } from './array-copy-spread.mjs';
 import { numberConversion } from './number-conversion.mjs';
+import { preferOptionalChainStrict } from './prefer-optional-chain-strict.mjs';
 
 const tester = createRuleTester();
 
@@ -33,9 +34,10 @@ describe('公司规范新增机检规则', () => {
 
   it('G.OTH.05 拦截公网地址与邮箱，放行本机地址', () => {
     tester.run('no-public-address', noPublicAddress, {
-      valid: ["const local = 'http://localhost:3000/x'", "const ip = '10.0.0.0/8'"],
+      valid: ["const local = 'http://localhost:3000/x'", "const ip = '127.0.0.1'", "const cidr = '10.0.0.0/8'"],
       invalid: [
         { code: "const url = 'https://api.vendor-cloud.net/x'", errors: [{ messageId: 'address' }] },
+        { code: "const testNet = '192.0.2.0'", errors: [{ messageId: 'address' }] },
         { code: 'const mail = "dev.user@company.com"', errors: [{ messageId: 'address' }] },
       ],
     });
@@ -98,6 +100,19 @@ describe('公司规范新增机检规则', () => {
       invalid: [
         { code: 'const count = parseInt(text, 10);', errors: [{ messageId: 'banned' }] },
         { code: 'const value = Number(raw);', errors: [{ messageId: 'unchecked' }] },
+      ],
+    });
+  });
+
+  it('G.AST.03 平台口径：链式条件与三元取值都要用可选链', () => {
+    tester.run('prefer-optional-chain-strict', preferOptionalChainStrict, {
+      valid: ['const size = list?.length;', 'if (item && other.flag) { use(item); }', 'const value = a && b ? 1 : 2;'],
+      invalid: [
+        { code: 'if (scope && scope.enabled) { use(scope); }', errors: [{ messageId: 'optional' }] },
+        {
+          code: "const key = packaged && packaged.startsWith('aigc/') && !packaged.includes('..') ? packaged : fallback;",
+          errors: [{ messageId: 'optional' }],
+        },
       ],
     });
   });

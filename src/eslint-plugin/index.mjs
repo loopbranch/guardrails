@@ -27,6 +27,7 @@ import { noInsecureRandom } from './rules/no-insecure-random.mjs';
 import { noPublicAddress } from './rules/no-public-address.mjs';
 import { noUnsafeStorage } from './rules/no-unsafe-storage.mjs';
 import { postmessageOrigin } from './rules/postmessage-origin.mjs';
+import { preferOptionalChainStrict } from './rules/prefer-optional-chain-strict.mjs';
 import { noGlobalStyleImport } from './rules/no-global-style-import.mjs';
 import { noRepoClassSelector } from './rules/no-repo-class-selector.mjs';
 import { noWeakTest } from './rules/no-weak-test.mjs';
@@ -58,6 +59,7 @@ const plugin = {
     'no-array-property': noArrayProperty,
     'number-conversion': numberConversion,
     'prefer-array-methods': preferArrayMethods,
+    'prefer-optional-chain-strict': preferOptionalChainStrict,
     'no-global-style-import': noGlobalStyleImport,
     'no-repo-class-selector': noRepoClassSelector,
     'no-weak-test': noWeakTest,

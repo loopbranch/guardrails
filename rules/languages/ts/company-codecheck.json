@@ -90,7 +90,7 @@
       "sections": ["ts"],
       "catalogId": "CC-008",
       "severity": "建议",
-      "mechanism": "ESLint `@typescript-eslint/prefer-optional-chain`（类型感知车道）",
+      "mechanism": "@typescript-eslint/prefer-optional-chain + aigc/prefer-optional-chain-strict",
       "status": "covered"
     },
     {
@@ -689,7 +689,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-073",
       "severity": "必须",
-      "mechanism": "ESLint `aigc/no-public-address`",
+      "mechanism": "ESLint `aigc/no-public-address`（平台口径：除私有/回环/通配/组播外一律拦）",
       "status": "covered",
       "difference": "公司规范当前工具只查 email/IP；本仓安全评审同时覆盖公网 URL（标准协议地址除外）。"
     },

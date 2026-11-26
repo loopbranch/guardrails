@@ -1,0 +1,910 @@
+{
+  "$comment": "由 control/rules/codecheck-catalog.json 抽取并按类别分档；metric 条目对应度量指标，checklist 条目不判失败。",
+  "source": "control/rules/codecheck-catalog.json",
+  "rules": [
+    {
+      "id": "CC-001",
+      "title": "不使用 eval",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-eval`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-002",
+      "title": "不把字符串当作代码传给定时器",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-implied-eval`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-003",
+      "title": "发布的代码不保留调试输出",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-console`（仅 logger 模块放行：apps/*/src/**/logger.ts、pkgs/*/src/**/logger.ts、tools/logger.mjs）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-004",
+      "title": "不使用浏览器原生弹窗",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-restricted-globals`，含 prompt"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-005",
+      "title": "不提交 debugger 语句",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-debugger`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-006",
+      "title": "尽量不写非空断言",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/no-non-null-assertion`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-007",
+      "title": "设默认值时优先用空值合并运算符",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-nullish-coalescing`（类型感知车道）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-008",
+      "title": "用可选链代替逐层判空",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-optional-chain`（类型感知车道）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-009",
+      "title": "返回 this 的方法以 this 作返回类型",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-return-this-type`（类型感知车道）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-010",
+      "title": "注释写在代码上方或行尾",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/comment-code-gap`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-011",
+      "title": "抑制类型检查的指令必须写明原因",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/ban-ts-comment`，ts-expect-error 须带说明"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-012",
+      "title": "注释符后留一个空格",
+      "severity": "建议",
+      "execution": {
+        "method": "建议，不进入评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-013",
+      "title": "忽略类型错误时优先用预期错误指令",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/ban-ts-comment`：禁 ts-ignore"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-014",
+      "title": "交付的代码不留 TODO 和 FIXME",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-warning-comments`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-015",
+      "title": "跨窗口通信必须严格核对来源",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审发送明确targetOrigin，接收核对origin与source"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-016",
+      "title": "switch 要有默认分支",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `default-case`，commentPattern 为 `no default`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-017",
+      "title": "有内容的 case 必须显式结束",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-fallthrough`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-018",
+      "title": "在 case 中声明变量时用大括号包住",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-case-declarations`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-019",
+      "title": "else if 链以 else 收尾",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/else-if-else`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-020",
+      "title": "不用逻辑运算符代替 if",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/no-unused-expressions`（推荐集默认不允许短路语句），JSX 不受影响"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-021",
+      "title": "条件表达式里不做赋值",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-cond-assign: always`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-022",
+      "title": "控制语句的条件不宜过多",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/max-conditionals`"
+      },
+      "category": "metric",
+      "metric": "condition-width"
+    },
+    {
+      "id": "CC-023",
+      "title": "用 const 或 let 声明变量，不用 var",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-var` + ESLint `prefer-const`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-024",
+      "title": "一条语句只声明一个变量",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `one-var: never`，例外 E2"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-025",
+      "title": "不写连续赋值",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-multi-assign`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-026",
+      "title": "声明变量时不显式赋 undefined",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-undef-init`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-027",
+      "title": "用字面量创建数组和对象",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-array-constructor` + ESLint `no-object-constructor`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-028",
+      "title": "内层变量不与外层同名",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/no-shadow`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-029",
+      "title": "枚举成员显式赋值",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-enum-initializers`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-030",
+      "title": "枚举成员的值用字面量",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-literal-enum-member`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-031",
+      "title": "规范地抛出和捕获异常",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/only-throw-error`（类型感知）+ ESLint `no-empty`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-032",
+      "title": "Promise 拒绝时传 Error 对象",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/prefer-promise-reject-errors`（类型感知）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-033",
+      "title": "finally 块必须正常结束",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-unsafe-finally`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-034",
+      "title": "比较时变量在左、常量在右",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `yoda`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-035",
+      "title": "用严格相等判断",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `eqeqeq: always`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-036",
+      "title": "不嵌套三元表达式",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-nested-ternary`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-037",
+      "title": "混用运算符时用括号表明优先级",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-mixed-operators`（只启用 `**` 与其它算术运算符的混用组，平台实际范围）；其余混用由 clean-code 评审"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-038",
+      "title": "正则中的连续空格写明个数",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-regex-spaces`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-039",
+      "title": "正则捕获组尽量命名",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `prefer-named-capture-group`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-040",
+      "title": "单行不宜过长",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier printWidth 140；不设 max-len"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-041",
+      "title": "折行时运算符放在行尾",
+      "severity": "建议",
+      "execution": {
+        "method": "以 Prettier 输出为准（二元运算符换行留在行末）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-042",
+      "title": "属性较多的对象字面量逐行书写",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/object-props-per-line`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-043",
+      "title": "过长的链式调用分行书写",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/chain-linebreaks`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-044",
+      "title": "用空格分隔关键字",
+      "severity": "建议",
+      "execution": {
+        "method": "core/format：Prettier"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-045",
+      "title": "控制语句的执行体都加大括号",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `curly: all`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-046",
+      "title": "语句末尾写分号",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier semi: true"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-047",
+      "title": "类型中的方法写成函数属性",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/method-signature-style: property`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-048",
+      "title": "用 ES 模块组织代码，不用命名空间",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/no-namespace`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-049",
+      "title": "源码函数最多 100 行",
+      "severity": "必须",
+      "execution": {
+        "method": "项目强制执行：源码用 ESLint `max-lines-per-function: 100`（含 TSX，忽略空行和注释）；测试与 e2e 用 `aigc/function-lines`（平台口径：统计整段函数含参数与返回类型注解，排除嵌套函数）"
+      },
+      "category": "metric",
+      "metric": "function-lines"
+    },
+    {
+      "id": "CC-050",
+      "title": "代码块嵌套不超过 4 层",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `max-depth: 4`"
+      },
+      "category": "metric",
+      "metric": "depth"
+    },
+    {
+      "id": "CC-051",
+      "title": "回调嵌套不超过 4 层",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `max-nested-callbacks`"
+      },
+      "category": "metric",
+      "metric": "depth"
+    },
+    {
+      "id": "CC-052",
+      "title": "带默认值的参数放在最后",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/default-param-last`，例外 E7"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-053",
+      "title": "函数各路径的返回方式保持一致",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/consistent-return`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-054",
+      "title": "不用 Function 构造函数创建函数",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-new-func`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-055",
+      "title": "不改写函数参数",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-param-reassign`（props: false）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-056",
+      "title": "用 rest 参数代替 arguments",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `prefer-rest-params`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-057",
+      "title": "独立函数一律使用箭头函数",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `aigc/arrow-functions` 、严格回调规则与 CodeCheck 存量触碰检查"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-058",
+      "title": "只导出不可变的绑定",
+      "severity": "必须",
+      "execution": {
+        "method": "不引入 import 插件，用 ESLint `no-restricted-syntax` 禁 `export let/var`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-059",
+      "title": "类和构造函数用大驼峰命名",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/naming-convention`：class/type 为 PascalCase"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-060",
+      "title": "函数用小驼峰命名",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/naming-convention` 检查函数声明，`aigc/arrow-function-naming` 检查以箭头函数为初始值的变量声明，包含类型断言等透明包装"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-061",
+      "title": "布尔变量不用否定式命名",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/naming-convention`：布尔变量与参数不用否定式（类型感知）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-062",
+      "title": "不用保留字和受限名称命名变量",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-shadow-restricted-names`（推荐集已含）+ `no-restricted-syntax` 禁变量名 short/transient/char/native/final"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-063",
+      "title": "文件命名统一，扩展名小写",
+      "severity": "建议",
+      "execution": {
+        "method": "建议，不进入评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-064",
+      "title": "new 调用始终带括号",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier 统一输出 `new Foo()`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-065",
+      "title": "对象属性名优先用标识符",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier quoteProps: as-needed（默认）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-066",
+      "title": "属性访问优先用点号",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `dot-notation`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-067",
+      "title": "不在实例上直接调用原型的内置方法",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-prototype-builtins`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-068",
+      "title": "限定 for-in 的遍历范围",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `guard-for-in`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-069",
+      "title": "不修改内置对象的原型",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-extend-native`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-070",
+      "title": "安全用途的随机数必须密码学安全",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审（安全语义）"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-071",
+      "title": "废弃代码直接删除，不留成注释",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审（只看新增注释）"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-072",
+      "title": "发布内容不含开发者个人信息",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-073",
+      "title": "代码中不写公网地址",
+      "severity": "必须",
+      "execution": {
+        "method": "security 评审场景 11（发布包公网地址），例外 E8"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-074",
+      "title": "源文件统一用 UTF-8 编码",
+      "severity": "建议",
+      "execution": {
+        "method": ".editorconfig charset=utf-8"
+      },
+      "category": "covered-by",
+      "reason": ".editorconfig charset=utf-8"
+    },
+    {
+      "id": "CC-075",
+      "title": "不使用 with 语句",
+      "severity": "必须",
+      "execution": {
+        "method": "TS 解析与严格模式已拒绝 with"
+      },
+      "category": "covered-by",
+      "reason": "TS 解析与严格模式已拒绝 with"
+    },
+    {
+      "id": "CC-076",
+      "title": "小数点前后的 0 不省略",
+      "severity": "必须",
+      "execution": {
+        "method": "Prettier 自动补前导 0、去尾随点，不需要 no-floating-decimal"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-077",
+      "title": "类型注解用统一的写法",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/no-wrapper-object-types`、no-unsafe-function-type、no-empty-object-type（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-078",
+      "title": "用 isNaN 判断 NaN",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `use-isnan`（推荐集已含）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-079",
+      "title": "浮点数不直接判等",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `aigc/no-float-equality`（`==`、`===` 的字面量与行内算术）与 quality C2 评审（`!=`、`!==` 与变量之间的比较）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-080",
+      "title": "类型成员用分号分隔",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier 输出分号分隔"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-081",
+      "title": "字符串优先用单引号",
+      "severity": "建议",
+      "execution": {
+        "method": "Prettier singleQuote"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-082",
+      "title": "对象类型优先用 interface",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `@typescript-eslint/consistent-type-definitions`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-083",
+      "title": "拼接字符串用模板字符串",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `prefer-template`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-084",
+      "title": "不用反斜杠续行写字符串",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `no-multi-str`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-085",
+      "title": "可选成员用问号标注，不写 undefined 联合",
+      "severity": "建议",
+      "execution": {
+        "method": "ESLint `aigc/prefer-optional-member`；类型别名中的 `| undefined` 由 `no-restricted-syntax` 拦截"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-086",
+      "title": "数组只存放按序排列的元素",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-087",
+      "title": "遍历数组优先用数组方法",
+      "severity": "建议",
+      "execution": {
+        "method": "clean-code 评审（热路径可保留 for）"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-088",
+      "title": "遍历数组时不增删其元素",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-089",
+      "title": "用展开语法或 concat 复制数组",
+      "severity": "建议",
+      "execution": {
+        "method": "clean-code 评审，例外 E9"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-090",
+      "title": "类型转换要写得明确",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-implicit-coercion`"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-091",
+      "title": "转数字时用 Number() 并检查 NaN",
+      "severity": "建议",
+      "execution": {
+        "method": "clean-code 评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-092",
+      "title": "不在浏览器数据库中存敏感数据",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-093",
+      "title": "不在 Web Storage 中存敏感数据",
+      "severity": "必须",
+      "execution": {
+        "method": "clean-code 评审；状态库持久化只写白名单字段"
+      },
+      "category": "checklist",
+      "reason": "无法机检，输出检查清单，不判失败"
+    },
+    {
+      "id": "CC-094",
+      "title": "谨慎绕过 Angular 的内容净化",
+      "severity": "建议",
+      "execution": {
+        "method": "项目使用 Angular 时核查 DomSanitizer 信任边界；不使用时不适用"
+      },
+      "category": "not-applicable",
+      "reason": "本项目不使用该框架，接入方使用该框架时生效"
+    },
+    {
+      "id": "CC-095",
+      "title": "React 中不直接写入 HTML 字符串",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-restricted-syntax` 禁 dangerouslySetInnerHTML（不引入 eslint-plugin-react）"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-096",
+      "title": "不用外部数据拼接系统命令",
+      "severity": "必须",
+      "execution": {
+        "method": "ESLint `no-restricted-imports` 禁 child_process 的 exec/execSync（只允许 execFile/spawn）+ security 评审场景 4"
+      },
+      "category": "defect"
+    },
+    {
+      "id": "CC-097",
+      "title": "Vue 中不使用 v-html",
+      "severity": "必须",
+      "execution": {
+        "method": "项目使用 Vue 时核查 v-html；不使用时不适用"
+      },
+      "category": "not-applicable",
+      "reason": "本项目不使用该框架，接入方使用该框架时生效"
+    },
+    {
+      "id": "CC-098",
+      "title": "使用 ES6+ 语法并同步重构涉及的旧代码",
+      "severity": "必须",
+      "execution": {
+        "method": "quality C2 评审语法选择、旧代码重构范围及语义等价性；已有 ESLint 规则覆盖部分以机检为准"
+      },
+      "category": "defect"
+    }
+  ]
+}

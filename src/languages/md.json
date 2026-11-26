@@ -1,0 +1,10 @@
+{
+  "language": "md",
+  "files": ["**/*.md", "**/*.mdx"],
+  "format": { "engine": "prettier" },
+  "lint": { "state": "unsupported", "reason": "Markdown 只做格式化，不设缺陷规则" },
+  "codecheck": {
+    "defect": { "state": "unsupported", "reason": "Markdown 只做格式化，不设缺陷规则" },
+    "metrics": { "state": "unsupported", "reason": "Markdown 无规模或结构度量" }
+  }
+}

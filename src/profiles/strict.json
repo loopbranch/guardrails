@@ -1,0 +1,13 @@
+{
+  "name": "strict",
+  "description": "沿用本仓现值的严格档：阈值只允许被项目收紧，不允许隐式放宽",
+  "metrics": {
+    "ts": { "complexity": 20, "depth": 4, "function-lines": 100, "condition-width": 3 },
+    "js": { "complexity": 20, "depth": 4, "function-lines": 100, "condition-width": 3 }
+  },
+  "defects": {
+    "object-props-per-line": 4,
+    "chain-linebreaks": 4
+  },
+  "relax": []
+}

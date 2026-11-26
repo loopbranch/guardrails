@@ -1,0 +1,10 @@
+{
+  "language": "sql",
+  "files": ["sql/**/*.sql"],
+  "format": { "state": "unsupported", "reason": "SQL 格式化由 sql-governance 技能负责，本包不检测" },
+  "lint": { "state": "unsupported", "reason": "SQL 规则与检查器由 sql-governance 技能负责，本包只做文件归属声明" },
+  "codecheck": {
+    "defect": { "from": "lint" },
+    "metrics": { "state": "unsupported", "reason": "SQL 无圈复杂度与深度口径" }
+  }
+}

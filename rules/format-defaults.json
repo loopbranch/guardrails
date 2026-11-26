@@ -1,0 +1,10 @@
+{
+  "$comment": "由 .prettierrc 抽取；项目可覆盖路径排除，但格式取值以本文件为唯一真相。",
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 140,
+  "tabWidth": 2,
+  "arrowParens": "always",
+  "endOfLine": "lf"
+}

@@ -1,0 +1,297 @@
+{
+  "$comment": "由 tools/eslint/style-rules.mjs 抽取；规则取值是唯一真相，格式类规则由 Prettier 负责。",
+  "style": {
+    "curly": ["error", "all"],
+    "prefer-template": "error",
+    "no-nested-ternary": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-implicit-coercion": "error",
+    "no-lonely-if": "error",
+    "no-console": "error"
+  },
+  "codecheck": {
+    "aigc/arrow-function-naming": "error",
+    "aigc/prefer-optional-member": "error",
+    "aigc/chain-linebreaks": "error",
+    "aigc/max-conditionals": "error",
+    "aigc/else-if-else": "error",
+    "aigc/object-props-per-line": "error",
+    "aigc/comment-code-gap": "error",
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "prefer-named-capture-group": "error",
+    "max-nested-callbacks": ["error", 4],
+    "no-mixed-operators": [
+      "error",
+      {
+        "groups": [
+          ["*", "**"],
+          ["/", "**"],
+          ["+", "**"],
+          ["-", "**"],
+          ["%", "**"]
+        ]
+      }
+    ],
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "alert",
+        "message": "G.AOD.04：禁止 alert，改用 antd 反馈。"
+      },
+      {
+        "name": "confirm",
+        "message": "G.AOD.04：禁止 confirm，改用 antd Modal。"
+      },
+      {
+        "name": "prompt",
+        "message": "G.AOD.04：禁止 prompt，改用 antd 表单。"
+      }
+    ],
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-expect-error": true,
+        "ts-ignore": true,
+        "ts-nocheck": true,
+        "ts-check": false
+      }
+    ],
+    "default-case": [
+      "error",
+      {
+        "commentPattern": "^no default$"
+      }
+    ],
+    "one-var": ["error", "never"],
+    "no-multi-assign": "error",
+    "no-undef-init": "error",
+    "no-object-constructor": "error",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/prefer-enum-initializers": "error",
+    "@typescript-eslint/prefer-literal-enum-member": "error",
+    "yoda": "error",
+    "@typescript-eslint/method-signature-style": ["error", "property"],
+    "max-depth": ["error", 4],
+    "default-param-last": "off",
+    "@typescript-eslint/default-param-last": "error",
+    "no-new-func": "error",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "prefer-rest-params": "error",
+    "dot-notation": "error",
+    "guard-for-in": "error",
+    "no-extend-native": "error",
+    "no-multi-str": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "child_process",
+            "importNames": ["exec", "execSync"],
+            "message": "G.NOD.01：只允许 execFile/spawn，禁止拼接命令。"
+          },
+          {
+            "name": "node:child_process",
+            "importNames": ["exec", "execSync"],
+            "message": "G.NOD.01：只允许 execFile/spawn，禁止拼接命令。"
+          },
+          {
+            "name": "react-dom",
+            "importNames": ["findDOMNode", "render", "hydrate", "unmountComponentAtNode"],
+            "message": "React 19 移除了这些 react-dom 导出：改用 react-dom/client 的 createRoot/hydrateRoot 与 ref。"
+          },
+          {
+            "name": "react-dom/test-utils",
+            "message": "React 19 移除了 react-dom/test-utils：act 改从 react 导入。"
+          }
+        ]
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "function",
+        "format": ["camelCase", "PascalCase"]
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ExportNamedDeclaration > VariableDeclaration[kind!='const']",
+        "message": "G.MOD.01：导出的变量必须不可变，使用 export const。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+        "message": "react/no-danger：禁止 dangerouslySetInnerHTML。"
+      },
+      {
+        "selector": "VariableDeclarator[id.type='Identifier'][id.name=/^(short|transient|char|native|final)$/]",
+        "message": "G.NAM.05：这些保留字不得用作变量名；对象字段名按协议例外保留。"
+      },
+      {
+        "selector": "TSTypeAliasDeclaration > TSUnionType > TSUndefinedKeyword",
+        "message": "G.TYP.06：类型别名不得用 `| undefined` 定义可选值；可选成员与参数改用 `?`。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='ref'] > Literal",
+        "message": "React 19 移除了字符串 ref：改用 useRef 或回调 ref（React 19 迁移约束）。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='ref'] > JSXExpressionContainer > :matches(Literal, TemplateLiteral)",
+        "message": "React 19 移除了字符串 ref：改用 useRef 或回调 ref（React 19 迁移约束）。"
+      },
+      {
+        "selector": "MemberExpression[property.name=/^(defaultProps|propTypes|contextTypes|childContextTypes)$/]",
+        "message": "React 19 忽略 defaultProps/propTypes 并移除了 legacy context：改用参数默认值、TS 类型与 createContext。"
+      },
+      {
+        "selector": "PropertyDefinition[key.name=/^(defaultProps|propTypes|contextTypes|childContextTypes)$/]",
+        "message": "React 19 忽略 defaultProps/propTypes 并移除了 legacy context：改用参数默认值、TS 类型与 createContext。"
+      },
+      {
+        "selector": "MethodDefinition[key.name='getChildContext']",
+        "message": "React 19 移除了 legacy context（getChildContext）：改用 createContext。"
+      },
+      {
+        "selector": "MemberExpression[property.name=/^(findDOMNode|unmountComponentAtNode)$/]",
+        "message": "React 19 移除了 findDOMNode/unmountComponentAtNode：改用 ref 与 root.unmount()。"
+      },
+      {
+        "selector": "MemberExpression[object.name='ReactDOM'][property.name=/^(render|hydrate)$/]",
+        "message": "React 19 移除了 ReactDOM.render/hydrate：改用 react-dom/client 的 createRoot/hydrateRoot。"
+      }
+    ]
+  },
+  "strict": {
+    "no-cond-assign": ["error", "always"],
+    "eqeqeq": ["error", "always"],
+    "aigc/consistent-return": "error",
+    "prefer-arrow-callback": [
+      "error",
+      {
+        "allowNamedFunctions": false,
+        "allowUnboundThis": false
+      }
+    ],
+    "aigc/no-float-equality": "error"
+  },
+  "typescript": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_"
+      }
+    ]
+  },
+  "typeAware": {
+    "@typescript-eslint/prefer-nullish-coalescing": [
+      "error",
+      {
+        "ignoreBooleanCoercion": true
+      }
+    ],
+    "@typescript-eslint/prefer-optional-chain": "error",
+    "@typescript-eslint/prefer-return-this-type": "error",
+    "@typescript-eslint/only-throw-error": "error",
+    "prefer-promise-reject-errors": "off",
+    "@typescript-eslint/prefer-promise-reject-errors": "error"
+  },
+  "restrictedSyntax": {
+    "base": [
+      {
+        "selector": "ExportNamedDeclaration > VariableDeclaration[kind!='const']",
+        "message": "G.MOD.01：导出的变量必须不可变，使用 export const。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+        "message": "react/no-danger：禁止 dangerouslySetInnerHTML。"
+      },
+      {
+        "selector": "VariableDeclarator[id.type='Identifier'][id.name=/^(short|transient|char|native|final)$/]",
+        "message": "G.NAM.05：这些保留字不得用作变量名；对象字段名按协议例外保留。"
+      },
+      {
+        "selector": "TSTypeAliasDeclaration > TSUnionType > TSUndefinedKeyword",
+        "message": "G.TYP.06：类型别名不得用 `| undefined` 定义可选值；可选成员与参数改用 `?`。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='ref'] > Literal",
+        "message": "React 19 移除了字符串 ref：改用 useRef 或回调 ref（React 19 迁移约束）。"
+      },
+      {
+        "selector": "JSXAttribute[name.name='ref'] > JSXExpressionContainer > :matches(Literal, TemplateLiteral)",
+        "message": "React 19 移除了字符串 ref：改用 useRef 或回调 ref（React 19 迁移约束）。"
+      },
+      {
+        "selector": "MemberExpression[property.name=/^(defaultProps|propTypes|contextTypes|childContextTypes)$/]",
+        "message": "React 19 忽略 defaultProps/propTypes 并移除了 legacy context：改用参数默认值、TS 类型与 createContext。"
+      },
+      {
+        "selector": "PropertyDefinition[key.name=/^(defaultProps|propTypes|contextTypes|childContextTypes)$/]",
+        "message": "React 19 忽略 defaultProps/propTypes 并移除了 legacy context：改用参数默认值、TS 类型与 createContext。"
+      },
+      {
+        "selector": "MethodDefinition[key.name='getChildContext']",
+        "message": "React 19 移除了 legacy context（getChildContext）：改用 createContext。"
+      },
+      {
+        "selector": "MemberExpression[property.name=/^(findDOMNode|unmountComponentAtNode)$/]",
+        "message": "React 19 移除了 findDOMNode/unmountComponentAtNode：改用 ref 与 root.unmount()。"
+      },
+      {
+        "selector": "MemberExpression[object.name='ReactDOM'][property.name=/^(render|hydrate)$/]",
+        "message": "React 19 移除了 ReactDOM.render/hydrate：改用 react-dom/client 的 createRoot/hydrateRoot。"
+      }
+    ],
+    "webFeedback": [
+      {
+        "selector": "CallExpression[callee.object.name='Modal'][callee.property.name=/^(confirm|info|success|error|warning|warn)$/]",
+        "message": "禁止 antd Modal 静态方法：改用 App.useApp() 提供的 modal（见 React 19 迁移约束）。"
+      },
+      {
+        "selector": "CallExpression[callee.object.name=/^(message|notification)$/]",
+        "message": "禁止 antd message/notification 静态方法：改用 App.useApp() 提供的实例（见 React 19 迁移约束）。"
+      }
+    ]
+  },
+  "formattingRuleNames": [
+    "array-bracket-spacing",
+    "arrow-spacing",
+    "block-spacing",
+    "brace-style",
+    "comma-dangle",
+    "comma-spacing",
+    "eol-last",
+    "indent",
+    "key-spacing",
+    "keyword-spacing",
+    "linebreak-style",
+    "max-len",
+    "no-multi-spaces",
+    "no-trailing-spaces",
+    "object-curly-spacing",
+    "quotes",
+    "semi",
+    "space-before-blocks",
+    "space-before-function-paren",
+    "space-infix-ops"
+  ]
+}

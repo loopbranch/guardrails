@@ -1,0 +1,25 @@
+# 语言优先的检查插件包：同一份语言注册表驱动三个任务。
+# 执行器由项目自行安装（eslint、prettier、stylelint、sqlfluff），插件不自带工具本体。
+plugins:
+  - id: standards/format
+    version: 0.1.0
+    description: 按语言执行格式化检查，可修复
+    kind: check
+    command: [node, ./src/plugins/format.mjs]
+    timeout: 300
+  - id: standards/lint
+    version: 0.1.0
+    description: 按语言执行缺陷检查
+    kind: check
+    command: [node, ./src/plugins/lint.mjs]
+    timeout: 600
+  - id: standards/codecheck
+    version: 0.1.0
+    description: 汇总缺陷并判定度量阈值
+    kind: check
+    command: [node, ./src/plugins/codecheck.mjs]
+    timeout: 600
+commands:
+  - name: standards
+    argv: [node, ./src/cli.mjs]
+    description: 列出语言能力矩阵或对指定文件运行单项任务

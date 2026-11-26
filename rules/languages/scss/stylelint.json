@@ -1,0 +1,39 @@
+{
+  "$comment": "由 .stylelintrc.json 抽取；生成物与设计令牌目录的排除由项目侧补充。",
+  "extends": ["stylelint-config-standard-scss"],
+  "ignoreFiles": [
+    "pkgs/design-tokens/scss/_tokens.scss",
+    "pkgs/design-tokens/scss/theme.generated.scss",
+    "**/dist/**",
+    "**/node_modules/**",
+    ".worktrees/**",
+    "pkgs/video-editor-native/src/web/styles/_tokens.scss",
+    "pkgs/video-editor-native/src/web/styles/theme.generated.scss"
+  ],
+  "rules": {
+    "selector-class-pattern": [
+      "^[a-z][a-zA-Z0-9]*$",
+      {
+        "resolveNestedSelectors": true
+      }
+    ],
+    "color-no-hex": true,
+    "color-named": "never",
+    "function-disallowed-list": ["rgb", "rgba", "hsl", "hsla"],
+    "declaration-no-important": true,
+    "selector-max-id": 0,
+    "max-nesting-depth": 3,
+    "selector-max-compound-selectors": 4,
+    "selector-disallowed-list": ["/:global/", "/\\[class[~*^|$]?=['\\\"]?ant-/", "/\\.ant-/"],
+    "scss/load-partial-extension": "never",
+    "scss/no-global-function-names": true,
+    "at-rule-disallowed-list": ["import"],
+    "custom-property-pattern": "^(aigc|ant|[a-z]+(-[a-z0-9]+)*)$",
+    "selector-pseudo-class-no-unknown": true,
+    "selector-not-notation": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-property-value-disallowed-list": {
+      "/.*/": ["/\\b\\d+(?:\\.\\d+)?px\\b/"]
+    }
+  }
+}

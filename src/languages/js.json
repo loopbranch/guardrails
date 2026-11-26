@@ -1,0 +1,13 @@
+{
+  "language": "js",
+  "files": ["**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
+  "format": { "engine": "prettier" },
+  "lint": { "engine": "eslint", "lanes": ["script", "commonjs", "e2e"] },
+  "codecheck": {
+    "defect": { "from": "lint" },
+    "metrics": {
+      "engine": "size-shape",
+      "ids": ["complexity", "depth", "function-lines", "condition-width"]
+    }
+  }
+}

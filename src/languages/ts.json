@@ -1,0 +1,13 @@
+{
+  "language": "ts",
+  "files": ["**/*.ts", "**/*.tsx"],
+  "format": { "engine": "prettier" },
+  "lint": { "engine": "eslint", "lanes": ["web", "node", "universal", "test", "e2e", "script"] },
+  "codecheck": {
+    "defect": { "from": "lint" },
+    "metrics": {
+      "engine": "size-shape",
+      "ids": ["complexity", "depth", "function-lines", "condition-width"]
+    }
+  }
+}

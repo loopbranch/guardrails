@@ -1,0 +1,55 @@
+{
+  "name": "@fantasticit/sumi-standards",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "语言优先的格式化、缺陷与度量检查插件包",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./config/eslint": "./src/config/eslint.mjs",
+    "./format-defaults": "./rules/format-defaults.json",
+    "./stylelint-config": "./rules/languages/scss/stylelint.json",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node --test src/*.test.mjs src/metrics/*.test.mjs src/config/*.test.mjs src/engines/*.test.mjs",
+    "typecheck": "node --check src/index.mjs"
+  },
+  "peerDependencies": {
+    "@eslint/js": ">=9",
+    "eslint": ">=9",
+    "globals": ">=15",
+    "typescript": ">=5",
+    "typescript-eslint": ">=8",
+    "eslint-plugin-react-hooks": ">=7"
+  },
+  "peerDependenciesMeta": {
+    "@eslint/js": {
+      "optional": true
+    },
+    "eslint": {
+      "optional": true
+    },
+    "globals": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    },
+    "typescript-eslint": {
+      "optional": true
+    },
+    "eslint-plugin-react-hooks": {
+      "optional": true
+    }
+  },
+  "files": [
+    "src",
+    "rules",
+    "sumi-plugins.yaml",
+    "README.md",
+    "VERSION",
+    "CHANGELOG.md"
+  ],
+  "repository": "https://github.com/loopbranch/sumi-standards"
+}

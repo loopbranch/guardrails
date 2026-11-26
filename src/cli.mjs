@@ -5,7 +5,7 @@ import { capabilityMatrix, loadLanguages, resolveLanguage } from './registry.mjs
 import { runTask } from './run.mjs';
 import { buildSarif, verdictOf } from './sarif.mjs';
 
-const TOOL = { name: '@fantasticit/sumi-standards', version: '0.0.0' };
+const TOOL = { name: '@fantasticit/guardrails', version: '0.0.0' };
 
 const write = (text) => {
   process.stdout.write(`${text}\n`);

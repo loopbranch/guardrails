@@ -2,9 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const data = JSON.parse(
-  readFileSync(new URL('../../rules/languages/ts/company-codecheck.json', import.meta.url), 'utf8'),
-);
+const data = JSON.parse(readFileSync(new URL('../../rules/languages/ts/company-codecheck.json', import.meta.url), 'utf8'));
 
 test('公司规范 97 条规则全部映射到目录条目', () => {
   assert.equal(data.rules.length, 97);
@@ -21,7 +19,7 @@ test('状态分布与差异说明保持稳定', () => {
     accumulator[rule.status] = (accumulator[rule.status] ?? 0) + 1;
     return accumulator;
   }, {});
-  assert.deepEqual(counts, { covered: 75, difference: 7, 'review-only': 12, conditional: 3 });
+  assert.deepEqual(counts, { covered: 82, difference: 7, 'review-only': 5, conditional: 3 });
   const differences = data.rules.filter((rule) => rule.difference !== undefined);
   assert.ok(differences.length >= 7, '差异条目应保留口径说明');
 });

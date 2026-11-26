@@ -5,10 +5,7 @@
     {
       "id": "[react]no-danger",
       "title": "[react]no-danger",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-095",
       "severity": "必须",
       "mechanism": "ESLint `no-restricted-syntax` 禁 dangerouslySetInnerHTML（不引入 eslint-plugin-react）",
@@ -17,9 +14,7 @@
     {
       "id": "[vue]no-v-html",
       "title": "[vue]no-v-html",
-      "sections": [
-        "js"
-      ],
+      "sections": ["js"],
       "catalogId": "CC-097",
       "severity": "必须",
       "mechanism": "项目使用 Vue 时核查 v-html；不使用时不适用",
@@ -28,10 +23,7 @@
     {
       "id": "G.AOD.01",
       "title": "禁止使用 eval()",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-001",
       "severity": "必须",
       "mechanism": "ESLint `no-eval`",
@@ -40,10 +32,7 @@
     {
       "id": "G.AOD.02",
       "title": "禁止使用隐式的 eval()",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-002",
       "severity": "必须",
       "mechanism": "ESLint `no-implied-eval`",
@@ -52,10 +41,7 @@
     {
       "id": "G.AOD.03",
       "title": "尽量避免使用console",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-003",
       "severity": "建议",
       "mechanism": "ESLint `no-console`（仅 logger 模块放行：apps/*/src/**/logger.ts、pkgs/*/src/**/logger.ts、tools/logger.mjs）",
@@ -65,10 +51,7 @@
     {
       "id": "G.AOD.04",
       "title": "禁止使用 alert",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-004",
       "severity": "必须",
       "mechanism": "ESLint `no-restricted-globals`，含 prompt",
@@ -77,10 +60,7 @@
     {
       "id": "G.AOD.05",
       "title": "禁止使用 debugger",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-005",
       "severity": "必须",
       "mechanism": "ESLint `no-debugger`（推荐集已含）",
@@ -89,9 +69,7 @@
     {
       "id": "G.AST.01-TS",
       "title": "建议不要使用非空断言",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-006",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/no-non-null-assertion`",
@@ -100,9 +78,7 @@
     {
       "id": "G.AST.02-TS",
       "title": "使用??进行空值合并",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-007",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/prefer-nullish-coalescing`（类型感知车道）",
@@ -111,9 +87,7 @@
     {
       "id": "G.AST.03-TS",
       "title": "使用可选链操作符?.替代非空判断",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-008",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/prefer-optional-chain`（类型感知车道）",
@@ -122,9 +96,7 @@
     {
       "id": "G.CLS.01-TS",
       "title": "当方法返回值是this，返回值的类型也应该是this",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-009",
       "severity": "必须",
       "mechanism": "ESLint `@typescript-eslint/prefer-return-this-type`（类型感知车道）",
@@ -133,9 +105,7 @@
     {
       "id": "G.CMT.01",
       "title": "代码注释置于对应代码的上方或右边",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-010",
       "severity": "建议",
       "mechanism": "ESLint `aigc/comment-code-gap`",
@@ -144,9 +114,7 @@
     {
       "id": "G.CMT.01-TS",
       "title": "使用// @ts-注释时必须添加说明",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-011",
       "severity": "必须",
       "mechanism": "ESLint `@typescript-eslint/ban-ts-comment`，ts-expect-error 须带说明",
@@ -155,10 +123,7 @@
     {
       "id": "G.CMT.02",
       "title": "注释符和注释内容之间留有一个空格",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-012",
       "severity": "建议",
       "mechanism": "ESLint `spaced-comment`",
@@ -167,9 +132,7 @@
     {
       "id": "G.CMT.02-TS",
       "title": "建议使用// @ts-expect-error代替// @ts-ignore忽略错误检查",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-013",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/ban-ts-comment`：禁 ts-ignore",
@@ -178,10 +141,7 @@
     {
       "id": "G.CMT.03",
       "title": "正式交付给客户的代码不应包含 TODO/FIXME 注释",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-014",
       "severity": "建议",
       "mechanism": "ESLint `no-warning-comments`",
@@ -191,22 +151,16 @@
     {
       "id": "G.CORS.01",
       "title": "使用postMessage方法实现跨域时，应严格校验Origin",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-015",
       "severity": "必须",
-      "mechanism": "clean-code 评审发送明确targetOrigin，接收核对origin与source",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/postmessage-origin`",
+      "status": "covered"
     },
     {
       "id": "G.CTL.01",
       "title": "每个 switch 语句都应包含一个 default 分支",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-016",
       "severity": "必须",
       "mechanism": "ESLint `default-case`，commentPattern 为 `no default`",
@@ -215,10 +169,7 @@
     {
       "id": "G.CTL.02",
       "title": "在 switch 语句的每一个有内容的 case 中都应放置一条 break 语句",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-017",
       "severity": "必须",
       "mechanism": "ESLint `no-fallthrough`（推荐集已含）",
@@ -227,10 +178,7 @@
     {
       "id": "G.CTL.03",
       "title": "case 语句中需要词法声明时, 大括号{}不能省略",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-018",
       "severity": "必须",
       "mechanism": "ESLint `no-case-declarations`（推荐集已含）",
@@ -239,10 +187,7 @@
     {
       "id": "G.CTL.04",
       "title": "含else if分支的条件判断应在最后加一个else分支",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-019",
       "severity": "建议",
       "mechanism": "ESLint `aigc/else-if-else`",
@@ -251,10 +196,7 @@
     {
       "id": "G.CTL.05",
       "title": "避免用逻辑运算符代替控制语句",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-020",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/no-unused-expressions`（推荐集默认不允许短路语句），JSX 不受影响",
@@ -263,10 +205,7 @@
     {
       "id": "G.CTL.06",
       "title": "不要在控制性条件表达式中执行赋值操作",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-021",
       "severity": "必须",
       "mechanism": "ESLint `no-cond-assign: always`",
@@ -275,10 +214,7 @@
     {
       "id": "G.CTL.07",
       "title": "避免在条件/循环控制语句中包含过多的条件",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-022",
       "severity": "建议",
       "mechanism": "ESLint `aigc/max-conditionals`",
@@ -287,10 +223,7 @@
     {
       "id": "G.DCL.01",
       "title": "声明变量时要求使用 const 或 let 而不是 var（ECMAScript 6）",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-023",
       "severity": "必须",
       "mechanism": "ESLint `no-var` + ESLint `prefer-const`",
@@ -299,10 +232,7 @@
     {
       "id": "G.DCL.03",
       "title": "每个语句只声明一个变量",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-024",
       "severity": "必须",
       "mechanism": "ESLint `one-var: never`，例外 E2",
@@ -311,10 +241,7 @@
     {
       "id": "G.DCL.04",
       "title": "禁止连续赋值",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-025",
       "severity": "必须",
       "mechanism": "ESLint `no-multi-assign`",
@@ -323,10 +250,7 @@
     {
       "id": "G.DCL.05",
       "title": "不要使用 undefined 初始化变量",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-026",
       "severity": "必须",
       "mechanism": "ESLint `no-undef-init`",
@@ -335,10 +259,7 @@
     {
       "id": "G.DCL.06",
       "title": "使用字面量风格的声明",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-027",
       "severity": "必须",
       "mechanism": "ESLint `no-array-constructor` + ESLint `no-object-constructor`",
@@ -347,10 +268,7 @@
     {
       "id": "G.DCL.07",
       "title": "避免当前作用域中的变量覆盖更外层作用域的变量",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-028",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/no-shadow`",
@@ -359,9 +277,7 @@
     {
       "id": "G.ENU.02-TS",
       "title": "应该显式定义枚举属性值",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-029",
       "severity": "必须",
       "mechanism": "ESLint `@typescript-eslint/prefer-enum-initializers`",
@@ -370,9 +286,7 @@
     {
       "id": "G.ENU.03-TS",
       "title": "枚举值应该使用字面量而非变量",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-030",
       "severity": "必须",
       "mechanism": "ESLint `@typescript-eslint/prefer-literal-enum-member`",
@@ -381,10 +295,7 @@
     {
       "id": "G.ERR.01",
       "title": "合理使用异常",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-031",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/only-throw-error`（类型感知）+ ESLint `no-empty`",
@@ -393,10 +304,7 @@
     {
       "id": "G.ERR.02",
       "title": "应使用 Error 对象作为 Promise 拒绝的原因",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-032",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/prefer-promise-reject-errors`（类型感知）",
@@ -405,10 +313,7 @@
     {
       "id": "G.ERR.03",
       "title": "不要使用return、break、continue或抛出异常使finally块非正常结束",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-033",
       "severity": "必须",
       "mechanism": "ESLint `no-unsafe-finally`（推荐集已含）",
@@ -417,10 +322,7 @@
     {
       "id": "G.EXP.01",
       "title": "表达式的比较，应该遵循左侧倾向于变化、右侧倾向于不变的原则",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-034",
       "severity": "建议",
       "mechanism": "ESLint `yoda`",
@@ -429,10 +331,7 @@
     {
       "id": "G.EXP.02",
       "title": "判断相等时应使用 === 和 !== ，而不是 == 和 !=",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-035",
       "severity": "必须",
       "mechanism": "ESLint `eqeqeq: always`",
@@ -441,10 +340,7 @@
     {
       "id": "G.EXP.03",
       "title": "禁止使用嵌套的三元表达式",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-036",
       "severity": "必须",
       "mechanism": "ESLint `no-nested-ternary`",
@@ -453,10 +349,7 @@
     {
       "id": "G.EXP.04",
       "title": "在混合使用不同的操作符时，采用括号明确运算的优先级",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-037",
       "severity": "建议",
       "mechanism": "ESLint `no-mixed-operators`（只启用 `**` 与其它算术运算符的混用组，平台实际范围）；其余混用由 clean-code 评审",
@@ -466,10 +359,7 @@
     {
       "id": "G.EXP.05",
       "title": "正则表达式字面量中，应显式指出重复的空白字符个数",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-038",
       "severity": "建议",
       "mechanism": "ESLint `no-regex-spaces`（推荐集已含）",
@@ -478,9 +368,7 @@
     {
       "id": "G.EXP.06",
       "title": "建议在正则表达式中使用命名捕获组",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-039",
       "severity": "建议",
       "mechanism": "ESLint `prefer-named-capture-group`",
@@ -489,10 +377,7 @@
     {
       "id": "G.FMT.02",
       "title": "行宽不宜过长",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-040",
       "severity": "建议",
       "mechanism": "Prettier printWidth 140；不设 max-len",
@@ -501,10 +386,7 @@
     {
       "id": "G.FMT.03",
       "title": "换行时将操作符留在行末",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-041",
       "severity": "建议",
       "mechanism": "以 Prettier 输出为准（二元运算符换行留在行末）",
@@ -513,10 +395,7 @@
     {
       "id": "G.FMT.04",
       "title": "对象字面量属性超过 4 个, 需要都换行",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-042",
       "severity": "建议",
       "mechanism": "ESLint `aigc/object-props-per-line`",
@@ -525,10 +404,7 @@
     {
       "id": "G.FMT.05",
       "title": "链式调用对象方法时，一行最多调用 4 次，否则需要换行",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-043",
       "severity": "建议",
       "mechanism": "ESLint `aigc/chain-linebreaks`",
@@ -537,10 +413,7 @@
     {
       "id": "G.FMT.08",
       "title": "用空格突出关键字和重要信息",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-044",
       "severity": "建议",
       "mechanism": "core/format：Prettier",
@@ -549,10 +422,7 @@
     {
       "id": "G.FMT.09",
       "title": "建议 if、for、do、while 等语句的执行体加大括号 {}",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-045",
       "severity": "建议",
       "mechanism": "ESLint `curly: all`",
@@ -562,10 +432,7 @@
     {
       "id": "G.FMT.12",
       "title": "每句代码后加分号",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-046",
       "severity": "建议",
       "mechanism": "Prettier semi: true",
@@ -574,9 +441,7 @@
     {
       "id": "G.FUN.02-TS",
       "title": "在type和interface中的方法声明使用属性声明方式",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-047",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/method-signature-style: property`",
@@ -585,9 +450,7 @@
     {
       "id": "G.MDL.02-TS",
       "title": "使用 import/export 代替 modules 和 namespace",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-048",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/no-namespace`（推荐集已含）",
@@ -596,9 +459,7 @@
     {
       "id": "G.MET.01",
       "title": "函数长度不宜过长",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-049",
       "severity": "必须",
       "mechanism": "项目强制执行：源码用 ESLint `max-lines-per-function: 100`（含 TSX，忽略空行和注释）；测试与 e2e 用 `aigc/function-lines`（平台口径：统计整段函数含参数与返回类型注解，排除嵌套函数）",
@@ -608,10 +469,7 @@
     {
       "id": "G.MET.03",
       "title": "块语句的最大可嵌套深度不要超过 4 层",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-050",
       "severity": "建议",
       "mechanism": "ESLint `max-depth: 4`",
@@ -620,10 +478,7 @@
     {
       "id": "G.MET.04",
       "title": "回调函数嵌套的层数不超过 4 层",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-051",
       "severity": "建议",
       "mechanism": "ESLint `max-nested-callbacks`",
@@ -632,10 +487,7 @@
     {
       "id": "G.MET.06",
       "title": "始终将默认参数放在最后",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-052",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/default-param-last`，例外 E7",
@@ -644,10 +496,7 @@
     {
       "id": "G.MET.07",
       "title": "建议使用一致的 return 语句",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-053",
       "severity": "建议",
       "mechanism": "ESLint `aigc/consistent-return`",
@@ -656,10 +505,7 @@
     {
       "id": "G.MET.08",
       "title": "不要动态创建函数",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-054",
       "severity": "必须",
       "mechanism": "ESLint `no-new-func`",
@@ -668,10 +514,7 @@
     {
       "id": "G.MET.09",
       "title": "不要给函数的入参重新赋值",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-055",
       "severity": "建议",
       "mechanism": "ESLint `no-param-reassign`（props: false）",
@@ -680,10 +523,7 @@
     {
       "id": "G.MET.10",
       "title": "不要使用 arguments，可以选择 rest 语法替代",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-056",
       "severity": "必须",
       "mechanism": "ESLint `prefer-rest-params`",
@@ -692,10 +532,7 @@
     {
       "id": "G.MET.12",
       "title": "用到匿名函数时优先使用箭头函数，替代保存this引用的方式",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-057",
       "severity": "必须",
       "mechanism": "ESLint `aigc/arrow-functions` 、严格回调规则与 CodeCheck 存量触碰检查",
@@ -704,10 +541,7 @@
     {
       "id": "G.MOD.01",
       "title": "需要导出的变量必须是不可变的类型",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-058",
       "severity": "必须",
       "mechanism": "不引入 import 插件，用 ESLint `no-restricted-syntax` 禁 `export let/var`",
@@ -716,10 +550,7 @@
     {
       "id": "G.NAM.01",
       "title": "构造器函数、类应采用大驼峰风格命名",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-059",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/naming-convention`：class/type 为 PascalCase",
@@ -728,10 +559,7 @@
     {
       "id": "G.NAM.02",
       "title": "函数应采用小驼峰风格命名",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-060",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/naming-convention` 检查函数声明，`aigc/arrow-function-naming` 检查以箭头函数为初始值的变量声明，包含类型断言等透明包装",
@@ -740,10 +568,7 @@
     {
       "id": "G.NAM.04",
       "title": "避免使用否定的布尔变量名",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-061",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/naming-convention`：布尔变量与参数不用否定式（类型感知）",
@@ -753,10 +578,7 @@
     {
       "id": "G.NAM.05",
       "title": "不要用保留字做为变量名，可使用保留字的同义词",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-062",
       "severity": "建议",
       "mechanism": "ESLint `no-shadow-restricted-names`（推荐集已含）+ `no-restricted-syntax` 禁变量名 short/transient/char/native/final",
@@ -765,10 +587,7 @@
     {
       "id": "G.NAM.07",
       "title": "使用统一的文件命名风格，文件扩展名应小写",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-063",
       "severity": "建议",
       "mechanism": "建议，不进入评审",
@@ -777,9 +596,7 @@
     {
       "id": "G.NOD.01",
       "title": "禁止直接使用外部数据拼接命令",
-      "sections": [
-        "js"
-      ],
+      "sections": ["js"],
       "catalogId": "CC-096",
       "severity": "必须",
       "mechanism": "ESLint `no-restricted-imports` 禁 child_process 的 exec/execSync（只允许 execFile/spawn）+ security 评审场景 4",
@@ -788,10 +605,7 @@
     {
       "id": "G.OBJ.01",
       "title": "通过 new 调用构造函数时，应始终使用圆括号",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-064",
       "severity": "建议",
       "mechanism": "Prettier 统一输出 `new Foo()`",
@@ -800,10 +614,7 @@
     {
       "id": "G.OBJ.02",
       "title": "对象字面量的属性名称使用标识符",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-065",
       "severity": "建议",
       "mechanism": "Prettier quoteProps: as-needed（默认）",
@@ -812,10 +623,7 @@
     {
       "id": "G.OBJ.04",
       "title": "优先使用点号来访问对象的属性，只有计算属性使用 []",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-066",
       "severity": "必须",
       "mechanism": "ESLint `dot-notation`",
@@ -824,10 +632,7 @@
     {
       "id": "G.OBJ.05",
       "title": "禁止在对象实例上直接使用 hasOwnProperty、isPrototypeOf、propertyIsEnumerable方法",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-067",
       "severity": "必须",
       "mechanism": "ESLint `no-prototype-builtins`（推荐集已含）",
@@ -836,10 +641,7 @@
     {
       "id": "G.OBJ.06",
       "title": "需要约束 for-in",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-068",
       "severity": "必须",
       "mechanism": "ESLint `guard-for-in`",
@@ -848,10 +650,7 @@
     {
       "id": "G.OBJ.07",
       "title": "不要修改内置对象的原型，或向原型添加方法",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-069",
       "severity": "必须",
       "mechanism": "ESLint `no-extend-native`",
@@ -860,59 +659,44 @@
     {
       "id": "G.OTH.01",
       "title": "安全场景下必须使用密码学意义上的安全随机数",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-070",
       "severity": "必须",
-      "mechanism": "clean-code 评审（安全语义）",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-insecure-random`",
+      "status": "covered"
     },
     {
       "id": "G.OTH.03",
       "title": "不用的代码段直接删除，不要注释掉",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-071",
       "severity": "必须",
-      "mechanism": "clean-code 评审（只看新增注释）",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-commented-code`",
+      "status": "covered"
     },
     {
       "id": "G.OTH.04",
       "title": "正式发布的代码及注释内容不应包含开发者个人信息",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-072",
       "severity": "必须",
-      "mechanism": "clean-code 评审",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-developer-info`",
+      "status": "covered"
     },
     {
       "id": "G.OTH.05",
       "title": "禁止代码中包含公网地址",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-073",
       "severity": "必须",
-      "mechanism": "security 评审场景 11（发布包公网地址），例外 E8",
-      "status": "review-only",
+      "mechanism": "ESLint `aigc/no-public-address`",
+      "status": "covered",
       "difference": "公司规范当前工具只查 email/IP；本仓安全评审同时覆盖公网 URL（标准协议地址除外）。"
     },
     {
       "id": "G.PRJ.01",
       "title": "源文件编码格式（包括注释）应该是 UTF-8",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-074",
       "severity": "建议",
       "mechanism": ".editorconfig charset=utf-8",
@@ -921,9 +705,7 @@
     {
       "id": "G.SCO.02",
       "title": "禁止使用 with() {}",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-075",
       "severity": "必须",
       "mechanism": "TS 解析与严格模式已拒绝 with",
@@ -932,10 +714,7 @@
     {
       "id": "G.TYP.01",
       "title": "禁止省略浮点数小数点前后的 0",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-076",
       "severity": "必须",
       "mechanism": "Prettier 自动补前导 0、去尾随点，不需要 no-floating-decimal",
@@ -944,9 +723,7 @@
     {
       "id": "G.TYP.01-TS",
       "title": "使用一致的类型定义写法",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-077",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/no-wrapper-object-types`、no-unsafe-function-type、no-empty-object-type（推荐集已含）",
@@ -955,10 +732,7 @@
     {
       "id": "G.TYP.02",
       "title": "判断变量是否为NaN时必须使用 isNaN() 方法",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-078",
       "severity": "必须",
       "mechanism": "ESLint `use-isnan`（推荐集已含）",
@@ -967,10 +741,7 @@
     {
       "id": "G.TYP.03",
       "title": "浮点型数据判断相等不要直接使用== 或===",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-079",
       "severity": "必须",
       "mechanism": "ESLint `aigc/no-float-equality`（`==`、`===` 的字面量与行内算术）与 quality C2 评审（`!=`、`!==` 与变量之间的比较）",
@@ -979,9 +750,7 @@
     {
       "id": "G.TYP.03-TS",
       "title": "接口、类、类型别名的声明使用 ; 分隔符号",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-080",
       "severity": "建议",
       "mechanism": "Prettier 输出分号分隔",
@@ -990,10 +759,7 @@
     {
       "id": "G.TYP.04",
       "title": "建议字符串使用单引号",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-081",
       "severity": "建议",
       "mechanism": "Prettier singleQuote",
@@ -1003,9 +769,7 @@
     {
       "id": "G.TYP.04-TS",
       "title": "使用接口来声明对象类型",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-082",
       "severity": "建议",
       "mechanism": "ESLint `@typescript-eslint/consistent-type-definitions`",
@@ -1014,10 +778,7 @@
     {
       "id": "G.TYP.05",
       "title": "使用模板字符串（`）实现字符串拼接",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-083",
       "severity": "建议",
       "mechanism": "ESLint `prefer-template`",
@@ -1026,10 +787,7 @@
     {
       "id": "G.TYP.06",
       "title": "不应使用字符串的行连续符号",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-084",
       "severity": "建议",
       "mechanism": "ESLint `no-multi-str`",
@@ -1038,9 +796,7 @@
     {
       "id": "G.TYP.06-TS",
       "title": "不要通过undefined去定义可选成员或参数",
-      "sections": [
-        "ts"
-      ],
+      "sections": ["ts"],
       "catalogId": "CC-085",
       "severity": "建议",
       "mechanism": "ESLint `aigc/prefer-optional-member`；类型别名中的 `| undefined` 由 `no-restricted-syntax` 拦截",
@@ -1049,10 +805,7 @@
     {
       "id": "G.TYP.07",
       "title": "不要在数组上定义或使用非数字属性（length 除外）",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-086",
       "severity": "必须",
       "mechanism": "clean-code 评审",
@@ -1061,10 +814,7 @@
     {
       "id": "G.TYP.08",
       "title": "数组遍历优先使用 Array 对象方法",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-087",
       "severity": "建议",
       "mechanism": "clean-code 评审（热路径可保留 for）",
@@ -1073,10 +823,7 @@
     {
       "id": "G.TYP.09",
       "title": "不要在数组遍历中对其进行元素的 remove/add 操作",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-088",
       "severity": "必须",
       "mechanism": "clean-code 评审",
@@ -1085,10 +832,7 @@
     {
       "id": "G.TYP.11",
       "title": "使用展开语法 … 或concat复制数组",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-089",
       "severity": "建议",
       "mechanism": "clean-code 评审，例外 E9",
@@ -1097,10 +841,7 @@
     {
       "id": "G.TYP.14",
       "title": "使用显式的类型转换",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-090",
       "severity": "必须",
       "mechanism": "ESLint `no-implicit-coercion`",
@@ -1109,10 +850,7 @@
     {
       "id": "G.TYP.15",
       "title": "其它类型转化为数字使用Number()，并且应显式检查返回值是否为NaN",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-091",
       "severity": "建议",
       "mechanism": "clean-code 评审",
@@ -1121,34 +859,25 @@
     {
       "id": "G.WSQ.01",
       "title": "禁止在 Web SQL database和Indexed database数据库中存储敏感数据",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-092",
       "severity": "必须",
-      "mechanism": "clean-code 评审",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-unsafe-storage`",
+      "status": "covered"
     },
     {
       "id": "G.WST.01",
       "title": "禁止在 localStorage和sessionStorage中存储敏感数据",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-093",
       "severity": "必须",
-      "mechanism": "clean-code 评审；状态库持久化只写白名单字段",
-      "status": "review-only"
+      "mechanism": "存储只经 safe-storage，其余直接访问被 `no-restricted-globals` 拦截",
+      "status": "covered"
     },
     {
       "id": "SecJS*CBG*bypassSecurityTrust_XSS",
       "title": "SecJS*CBG*bypassSecurityTrust_XSS",
-      "sections": [
-        "js",
-        "ts"
-      ],
+      "sections": ["js", "ts"],
       "catalogId": "CC-094",
       "severity": "建议",
       "mechanism": "项目使用 Angular 时核查 DomSanitizer 信任边界；不使用时不适用",
@@ -1156,7 +885,5 @@
     }
   ],
   "unmappedCompanyRules": [],
-  "catalogRulesWithoutCompanySource": [
-    "CC-098"
-  ]
+  "catalogRulesWithoutCompanySource": ["CC-098"]
 }

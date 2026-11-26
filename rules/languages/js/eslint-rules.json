@@ -25,11 +25,17 @@
       "error",
       {
         "groups": [
+          ["+", "-"],
+          ["*", "/", "%"],
           ["*", "**"],
           ["/", "**"],
           ["+", "**"],
           ["-", "**"],
-          ["%", "**"]
+          ["%", "**"],
+          ["&", "|", "^"],
+          ["<<", ">>", ">>>"],
+          ["==", "!=", "===", "!=="],
+          ["in", "instanceof"]
         ]
       }
     ],
@@ -174,7 +180,14 @@
         "selector": "MemberExpression[object.name='ReactDOM'][property.name=/^(render|hydrate)$/]",
         "message": "React 19 移除了 ReactDOM.render/hydrate：改用 react-dom/client 的 createRoot/hydrateRoot。"
       }
-    ]
+    ],
+    "spaced-comment": ["error", "always"],
+    "aigc/no-insecure-random": "error",
+    "aigc/no-unsafe-storage": "error",
+    "aigc/no-public-address": "error",
+    "aigc/no-developer-info": "error",
+    "aigc/no-commented-code": "error",
+    "aigc/postmessage-origin": "error"
   },
   "strict": {
     "no-cond-assign": ["error", "always"],

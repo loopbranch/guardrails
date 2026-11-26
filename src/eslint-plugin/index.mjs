@@ -16,6 +16,12 @@ import { elseIfElse } from './rules/else-if-else.mjs';
 import { functionLines } from './rules/function-lines.mjs';
 import { maxConditionals } from './rules/max-conditionals.mjs';
 import { noFloatEquality } from './rules/no-float-equality.mjs';
+import { noCommentedCode } from './rules/no-commented-code.mjs';
+import { noDeveloperInfo } from './rules/no-developer-info.mjs';
+import { noInsecureRandom } from './rules/no-insecure-random.mjs';
+import { noPublicAddress } from './rules/no-public-address.mjs';
+import { noUnsafeStorage } from './rules/no-unsafe-storage.mjs';
+import { postmessageOrigin } from './rules/postmessage-origin.mjs';
 import { noGlobalStyleImport } from './rules/no-global-style-import.mjs';
 import { noRepoClassSelector } from './rules/no-repo-class-selector.mjs';
 import { noWeakTest } from './rules/no-weak-test.mjs';
@@ -36,6 +42,12 @@ const plugin = {
     'function-lines': functionLines,
     'max-conditionals': maxConditionals,
     'no-float-equality': noFloatEquality,
+    'no-commented-code': noCommentedCode,
+    'no-developer-info': noDeveloperInfo,
+    'no-insecure-random': noInsecureRandom,
+    'no-public-address': noPublicAddress,
+    'no-unsafe-storage': noUnsafeStorage,
+    'postmessage-origin': postmessageOrigin,
     'no-global-style-import': noGlobalStyleImport,
     'no-repo-class-selector': noRepoClassSelector,
     'no-weak-test': noWeakTest,

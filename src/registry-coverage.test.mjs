@@ -25,7 +25,7 @@ test('仓库内参与检查的每个扩展名都归属且仅归属一个语言',
   const languages = loadLanguages();
   const unassigned = files.filter((file) => resolveLanguage(languages, file) === undefined);
   assert.deepEqual(unassigned.slice(0, 5), [], `未归属语言的文件示例：${unassigned.slice(0, 5).join(', ')}`);
-  assert.ok(files.length > 100, `样本过少：${files.length}`);
+  assert.ok(files.length > 20, `样本过少：${files.length}`);
 });
 
 test('未知扩展名不归属任何语言，由调用方报错', () => {

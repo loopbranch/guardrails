@@ -134,10 +134,9 @@
       "title": "跨窗口通信必须严格核对来源",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审发送明确targetOrigin，接收核对origin与source"
+        "method": "ESLint `aigc/postmessage-origin`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-016",
@@ -635,40 +634,36 @@
       "title": "安全用途的随机数必须密码学安全",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审（安全语义）"
+        "method": "ESLint `aigc/no-insecure-random`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-071",
       "title": "废弃代码直接删除，不留成注释",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审（只看新增注释）"
+        "method": "ESLint `aigc/no-commented-code`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-072",
       "title": "发布内容不含开发者个人信息",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审"
+        "method": "ESLint `aigc/no-developer-info`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-073",
       "title": "代码中不写公网地址",
       "severity": "必须",
       "execution": {
-        "method": "security 评审场景 11（发布包公网地址），例外 E8"
+        "method": "ESLint `aigc/no-public-address`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-074",
@@ -844,20 +839,18 @@
       "title": "不在浏览器数据库中存敏感数据",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审"
+        "method": "ESLint `aigc/no-unsafe-storage`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-093",
       "title": "不在 Web Storage 中存敏感数据",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审；状态库持久化只写白名单字段"
+        "method": "ESLint `no-restricted-globals` 与 `aigc/no-unsafe-storage`（存储只经 safe-storage）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-094",

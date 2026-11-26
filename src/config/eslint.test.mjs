@@ -40,7 +40,7 @@ test('CodeCheck 数据完整分档', () => {
     accumulator[rule.category] = (accumulator[rule.category] ?? 0) + 1;
     return accumulator;
   }, {});
-  assert.deepEqual(counts, { defect: 76, metric: 4, checklist: 14, 'covered-by': 2, 'not-applicable': 2 });
+  assert.deepEqual(counts, { defect: 83, metric: 4, checklist: 7, 'covered-by': 2, 'not-applicable': 2 });
   const metrics = catalog.rules.filter((rule) => rule.category === 'metric').map((rule) => rule.metric);
   assert.deepEqual([...new Set(metrics)].sort(), ['condition-width', 'depth', 'function-lines']);
 });

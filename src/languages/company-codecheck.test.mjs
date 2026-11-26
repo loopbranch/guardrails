@@ -21,9 +21,9 @@ test('状态分布与差异说明保持稳定', () => {
     accumulator[rule.status] = (accumulator[rule.status] ?? 0) + 1;
     return accumulator;
   }, {});
-  assert.deepEqual(counts, { covered: 73, difference: 8, 'review-only': 13, conditional: 3 });
+  assert.deepEqual(counts, { covered: 75, difference: 7, 'review-only': 12, conditional: 3 });
   const differences = data.rules.filter((rule) => rule.difference !== undefined);
-  assert.ok(differences.length >= 8, '差异条目应保留口径说明');
+  assert.ok(differences.length >= 7, '差异条目应保留口径说明');
 });
 
 test('目录中只有 ES6+ 语法一条没有公司条文来源', () => {

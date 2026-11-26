@@ -161,9 +161,8 @@
       ],
       "catalogId": "CC-012",
       "severity": "建议",
-      "mechanism": "建议，不进入评审",
-      "status": "review-only",
-      "difference": "公司规范要求注释符后留空格；本仓列为建议，不进入机检。"
+      "mechanism": "ESLint `spaced-comment`",
+      "status": "covered"
     },
     {
       "id": "G.CMT.02-TS",
@@ -462,7 +461,7 @@
       "severity": "建议",
       "mechanism": "ESLint `no-mixed-operators`（只启用 `**` 与其它算术运算符的混用组，平台实际范围）；其余混用由 clean-code 评审",
       "status": "difference",
-      "difference": "公司规范要求所有混合运算符加括号；本仓只机检 `**` 与算术运算符，其余走评审。"
+      "difference": "公司规范要求所有混合运算符加括号；本仓已机检算术、位运算、比较混用，逻辑运算符（&&/\\|\\|/??）混用尚未纳入，纳入需整改约 922 处。"
     },
     {
       "id": "G.EXP.05",
@@ -963,8 +962,7 @@
       "catalogId": "CC-078",
       "severity": "必须",
       "mechanism": "ESLint `use-isnan`（推荐集已含）",
-      "status": "difference",
-      "difference": "公司规范要求使用 `isNaN` 判定 NaN；本仓 `use-isnan` 只拦截与 NaN 的比较。"
+      "status": "covered"
     },
     {
       "id": "G.TYP.03",

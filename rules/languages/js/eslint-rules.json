@@ -1,7 +1,10 @@
 {
   "$comment": "ts 规则取值去掉类型感知车道；js 语言不使用 @typescript-eslint 类型信息。",
   "style": {
-    "curly": ["error", "all"],
+    "curly": [
+      "error",
+      "all"
+    ],
     "prefer-template": "error",
     "no-nested-ternary": "error",
     "no-var": "error",
@@ -18,24 +21,68 @@
     "aigc/else-if-else": "error",
     "aigc/object-props-per-line": "error",
     "aigc/comment-code-gap": "error",
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/consistent-type-definitions": [
+      "error",
+      "interface"
+    ],
     "prefer-named-capture-group": "error",
-    "max-nested-callbacks": ["error", 4],
+    "max-nested-callbacks": [
+      "error",
+      4
+    ],
     "no-mixed-operators": [
       "error",
       {
         "groups": [
-          ["+", "-"],
-          ["*", "/", "%"],
-          ["*", "**"],
-          ["/", "**"],
-          ["+", "**"],
-          ["-", "**"],
-          ["%", "**"],
-          ["&", "|", "^"],
-          ["<<", ">>", ">>>"],
-          ["==", "!=", "===", "!=="],
-          ["in", "instanceof"]
+          [
+            "+",
+            "-"
+          ],
+          [
+            "*",
+            "/",
+            "%"
+          ],
+          [
+            "*",
+            "**"
+          ],
+          [
+            "/",
+            "**"
+          ],
+          [
+            "+",
+            "**"
+          ],
+          [
+            "-",
+            "**"
+          ],
+          [
+            "%",
+            "**"
+          ],
+          [
+            "&",
+            "|",
+            "^"
+          ],
+          [
+            "<<",
+            ">>",
+            ">>>"
+          ],
+          [
+            "==",
+            "!=",
+            "===",
+            "!=="
+          ],
+          [
+            "in",
+            "instanceof"
+          ]
         ]
       }
     ],
@@ -72,7 +119,10 @@
         "commentPattern": "^no default$"
       }
     ],
-    "one-var": ["error", "never"],
+    "one-var": [
+      "error",
+      "never"
+    ],
     "no-multi-assign": "error",
     "no-undef-init": "error",
     "no-object-constructor": "error",
@@ -81,8 +131,14 @@
     "@typescript-eslint/prefer-enum-initializers": "error",
     "@typescript-eslint/prefer-literal-enum-member": "error",
     "yoda": "error",
-    "@typescript-eslint/method-signature-style": ["error", "property"],
-    "max-depth": ["error", 4],
+    "@typescript-eslint/method-signature-style": [
+      "error",
+      "property"
+    ],
+    "max-depth": [
+      "error",
+      4
+    ],
     "default-param-last": "off",
     "@typescript-eslint/default-param-last": "error",
     "no-new-func": "error",
@@ -103,17 +159,28 @@
         "paths": [
           {
             "name": "child_process",
-            "importNames": ["exec", "execSync"],
+            "importNames": [
+              "exec",
+              "execSync"
+            ],
             "message": "G.NOD.01：只允许 execFile/spawn，禁止拼接命令。"
           },
           {
             "name": "node:child_process",
-            "importNames": ["exec", "execSync"],
+            "importNames": [
+              "exec",
+              "execSync"
+            ],
             "message": "G.NOD.01：只允许 execFile/spawn，禁止拼接命令。"
           },
           {
             "name": "react-dom",
-            "importNames": ["findDOMNode", "render", "hydrate", "unmountComponentAtNode"],
+            "importNames": [
+              "findDOMNode",
+              "render",
+              "hydrate",
+              "unmountComponentAtNode"
+            ],
             "message": "React 19 移除了这些 react-dom 导出：改用 react-dom/client 的 createRoot/hydrateRoot 与 ref。"
           },
           {
@@ -127,11 +194,16 @@
       "error",
       {
         "selector": "typeLike",
-        "format": ["PascalCase"]
+        "format": [
+          "PascalCase"
+        ]
       },
       {
         "selector": "function",
-        "format": ["camelCase", "PascalCase"]
+        "format": [
+          "camelCase",
+          "PascalCase"
+        ]
       }
     ],
     "no-restricted-syntax": [
@@ -181,7 +253,10 @@
         "message": "React 19 移除了 ReactDOM.render/hydrate：改用 react-dom/client 的 createRoot/hydrateRoot。"
       }
     ],
-    "spaced-comment": ["error", "always"],
+    "spaced-comment": [
+      "error",
+      "always"
+    ],
     "aigc/no-insecure-random": "error",
     "aigc/no-unsafe-storage": "error",
     "aigc/no-public-address": "error",
@@ -190,8 +265,14 @@
     "aigc/postmessage-origin": "error"
   },
   "strict": {
-    "no-cond-assign": ["error", "always"],
-    "eqeqeq": ["error", "always"],
+    "no-cond-assign": [
+      "error",
+      "always"
+    ],
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
     "aigc/consistent-return": "error",
     "prefer-arrow-callback": [
       "error",

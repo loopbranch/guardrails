@@ -6,6 +6,10 @@ import { noPublicAddress } from './no-public-address.mjs';
 import { noDeveloperInfo } from './no-developer-info.mjs';
 import { noCommentedCode } from './no-commented-code.mjs';
 import { postmessageOrigin } from './postmessage-origin.mjs';
+import { noArrayProperty } from './no-array-property.mjs';
+import { noArrayMutationInIteration } from './no-array-mutation-in-iteration.mjs';
+import { arrayCopySpread } from './array-copy-spread.mjs';
+import { numberConversion } from './number-conversion.mjs';
 
 const tester = createRuleTester();
 
@@ -60,6 +64,40 @@ describe('公司规范新增机检规则', () => {
       invalid: [
         { code: "source.postMessage(data, '*')", errors: [{ messageId: 'wildcard' }] },
         { code: "window.addEventListener('message', (event) => handle(event.data))", errors: [{ messageId: 'unverified' }] },
+      ],
+    });
+  });
+
+  it('G.TYP.07 拦截数组字面量上的非数字属性', () => {
+    tester.run('no-array-property', noArrayProperty, {
+      valid: ['const list = []; list.length = 1;', 'const obj = {}; obj.total = 1;'],
+      invalid: [{ code: 'const list = []; list.total = 1;', errors: [{ messageId: 'property' }] }],
+    });
+  });
+
+  it('G.TYP.09 拦截遍历中增删同一数组', () => {
+    tester.run('no-array-mutation-in-iteration', noArrayMutationInIteration, {
+      valid: ['items.forEach((item) => count.push(item))'],
+      invalid: [{ code: 'items.forEach((item) => items.push(item))', errors: [{ messageId: 'mutate' }] }],
+    });
+  });
+
+  it('G.TYP.11 拦截 slice 复制，放行带上下界的截取', () => {
+    tester.run('array-copy-spread', arrayCopySpread, {
+      valid: ['const copy = [...items];', 'const first = items.slice(0, 2);'],
+      invalid: [
+        { code: 'const copy = items.slice();', errors: [{ messageId: 'copy' }] },
+        { code: 'const copy = items.slice(0);', errors: [{ messageId: 'copy' }] },
+      ],
+    });
+  });
+
+  it('G.TYP.15 拦截 parseInt/parseFloat 与未检查 NaN 的 Number()', () => {
+    tester.run('number-conversion', numberConversion, {
+      valid: ['const value = Number(raw); if (Number.isNaN(value)) { return; }'],
+      invalid: [
+        { code: 'const count = parseInt(text, 10);', errors: [{ messageId: 'banned' }] },
+        { code: 'const value = Number(raw);', errors: [{ messageId: 'unchecked' }] },
       ],
     });
   });

@@ -16,6 +16,11 @@ import { elseIfElse } from './rules/else-if-else.mjs';
 import { functionLines } from './rules/function-lines.mjs';
 import { maxConditionals } from './rules/max-conditionals.mjs';
 import { noFloatEquality } from './rules/no-float-equality.mjs';
+import { arrayCopySpread } from './rules/array-copy-spread.mjs';
+import { noArrayMutationInIteration } from './rules/no-array-mutation-in-iteration.mjs';
+import { noArrayProperty } from './rules/no-array-property.mjs';
+import { numberConversion } from './rules/number-conversion.mjs';
+import { preferArrayMethods } from './rules/prefer-array-methods.mjs';
 import { noCommentedCode } from './rules/no-commented-code.mjs';
 import { noDeveloperInfo } from './rules/no-developer-info.mjs';
 import { noInsecureRandom } from './rules/no-insecure-random.mjs';
@@ -48,6 +53,11 @@ const plugin = {
     'no-public-address': noPublicAddress,
     'no-unsafe-storage': noUnsafeStorage,
     'postmessage-origin': postmessageOrigin,
+    'array-copy-spread': arrayCopySpread,
+    'no-array-mutation-in-iteration': noArrayMutationInIteration,
+    'no-array-property': noArrayProperty,
+    'number-conversion': numberConversion,
+    'prefer-array-methods': preferArrayMethods,
     'no-global-style-import': noGlobalStyleImport,
     'no-repo-class-selector': noRepoClassSelector,
     'no-weak-test': noWeakTest,

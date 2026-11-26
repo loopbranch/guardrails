@@ -1,4 +1,4 @@
-# sumi-standards
+# guardrails
 
 语言优先的检查标准包：同一个语言注册表驱动格式化、缺陷与度量三类检查，供 Sumi 项目与普通 Node 项目复用。
 
@@ -26,7 +26,7 @@
 
 ```yaml
 packages:
-  - '@fantasticit/sumi-standards'
+  - '@fantasticit/guardrails'
 ```
 
 ```yaml
@@ -39,7 +39,7 @@ steps:
 ### ESLint 配置
 
 ```js
-import { browserGlobals, eslintConfig } from '@fantasticit/sumi-standards/config/eslint';
+import { browserGlobals, eslintConfig } from '@fantasticit/guardrails/config/eslint';
 
 export default [
   ...eslintConfig({ language: 'ts', files: ['apps/*/src/**/*.{ts,tsx}'], environment: browserGlobals, typeAware: true, lanes: ['react', 'web-style'] }),

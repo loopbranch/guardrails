@@ -1,6 +1,6 @@
 {
   "name": "@fantasticit/guardrails",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "type": "module",
   "description": "语言优先的格式化、缺陷与度量检查插件包",

@@ -59,6 +59,11 @@ node src/bin.mjs check --task format|lint|codecheck [--language ts] [--output pr
 
 工具由使用方安装，包不自带：`eslint`、`prettier`、`stylelint`、`typescript`（度量与类型感知车道）。缺执行器时任务立即以明确错误失败，不降级为 `unsupported`。
 
+## 公司规范映射
+
+`rules/languages/ts/company-codecheck.json` 记录公司 JS/TS CodeCheck 规范（97 条去重规则）与本地目录的对应关系：
+73 条已同义机检、8 条口径差异、13 条仅评审、3 条按框架条件适用。
+
 ## 规则与阈值
 
 - 规则取值：`rules/languages/<语言>/eslint-rules.json`、`rules/languages/scss/stylelint.json`、`rules/format-defaults.json`

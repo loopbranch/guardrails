@@ -6,7 +6,7 @@
 - 新增 `aigc/file-naming`（G.NAM.07）：扩展名必须小写；文件名使用小写短横线分段，React 组件文件允许 PascalCase，生成物 `*.module.d.scss.ts` 放行。
 - 公司规范映射：7 条原「仅评审/检查清单」规则改为机检；状态更新为 87 covered / 7 difference / 3 conditional，`review-only` 清零。
 - 修正规则可达性：`file-naming` 增加大写扩展名车道；`no-array-property` 支持 computed 字符串键；`prefer-array-methods` 覆盖 `for…in`；`number-conversion` 支持顶层与 `Number.isInteger` 检查；`no-unsafe-storage` 去重。
-- 规则单测改为在 describe 收集阶段执行，避免运行期注册被 vitest 忽略；E9 文案按最严口径改为已取消。
+- 规则单测改为在 describe 收集阶段执行，避免运行期注册被 vitest 忽略；恢复 `no-public-address` 混合 IP/邮箱的回归用例；E9 文案按最严口径改为已取消。
 
 ## 0.2.1
 

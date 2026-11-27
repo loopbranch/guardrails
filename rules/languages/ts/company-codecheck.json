@@ -235,7 +235,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-024",
       "severity": "必须",
-      "mechanism": "ESLint `one-var: never`，例外 E2",
+      "mechanism": "ESLint `one-var: never`（解构与 for 初始化按配置放行）",
       "status": "covered"
     },
     {
@@ -490,7 +490,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-052",
       "severity": "建议",
-      "mechanism": "ESLint `@typescript-eslint/default-param-last`，例外 E7",
+      "mechanism": "ESLint `@typescript-eslint/default-param-last`（默认参数放最后）",
       "status": "covered"
     },
     {

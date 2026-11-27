@@ -379,7 +379,7 @@
       "correct": "let width = 0;\nlet height = 0;",
       "incorrect": "let width = 0, height = 0;",
       "execution": {
-        "method": "ESLint `one-var: never`，例外 E2"
+        "method": "ESLint `one-var: never`（解构与 for 初始化按配置放行）"
       },
       "category": "defect"
     },
@@ -824,7 +824,7 @@
       "correct": "const paginate = (rows, size = 20) => {\n  return rows.slice(0, size);\n};",
       "incorrect": "const paginate = (size = 20, rows) => {\n  return rows.slice(0, size);\n};",
       "execution": {
-        "method": "ESLint `@typescript-eslint/default-param-last`，例外 E7"
+        "method": "ESLint `@typescript-eslint/default-param-last`（默认参数放最后）"
       },
       "category": "defect"
     },
@@ -1411,7 +1411,7 @@
       "correct": "const backup = [...queue];",
       "incorrect": "const backup = [];\nfor (let idx = 0; idx < queue.length; idx += 1) {\n  backup[idx] = queue[idx];\n}",
       "execution": {
-        "method": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制；E9 已按最严口径取消）"
+        "method": "ESLint `aigc/array-copy-spread`（整数组复制拦截 `slice()` / `slice(0)`，应使用展开或 `concat`）"
       },
       "category": "defect"
     },

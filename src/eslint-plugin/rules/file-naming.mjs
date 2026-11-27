@@ -5,7 +5,7 @@
  */
 import path from 'node:path';
 
-const CODE_FILE = /\.(?:ts|tsx|js|jsx|mjs|mts|cts)$/u;
+const CODE_FILE = /\.(?:ts|tsx|js|jsx|mjs|mts|cts)$/iu;
 const GENERATED_STYLE_TYPES = /\.module\.d\.scss\.ts$/u;
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)*$/u;
 const PASCAL = /^[A-Z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*$/u;

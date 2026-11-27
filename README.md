@@ -62,12 +62,12 @@ node src/bin.mjs check --task format|lint|codecheck [--language ts] [--output pr
 ## 公司规范映射
 
 `rules/languages/ts/company-codecheck.json` 记录公司 JS/TS CodeCheck 规范（97 条去重规则）与本地目录的对应关系：
-73 条已同义机检、8 条口径差异、13 条仅评审、3 条按框架条件适用。
+87 条已同义机检、7 条口径差异、3 条按框架条件适用，无仅评审条目。
 
 ## 规则与阈值
 
 - 规则取值：`rules/languages/<语言>/eslint-rules.json`、`rules/languages/scss/stylelint.json`、`rules/format-defaults.json`
-- CodeCheck 分档：`rules/languages/ts/codecheck.json`（缺陷 76、度量 4、检查清单 14、已覆盖 2、不适用 2）
+- CodeCheck 分档：`rules/languages/ts/codecheck.json`（缺陷 90、度量 4、已覆盖 2、不适用 2）
 - 阈值：`rules/profiles/strict.json`；项目覆盖只允许收紧（`min(项目值, 包默认值)`），放宽需显式声明理由
 
 ## 测试

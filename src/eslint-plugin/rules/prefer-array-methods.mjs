@@ -1,6 +1,6 @@
 /**
  * G.TYP.08：遍历数组优先使用数组方法。
- * 只拦明确是普通 Array 类型的索引循环；TypedArray、字符串、Map 与 for…of 均不拦。
+ * 只拦明确是普通 Array 类型的索引 for 与 for…in；TypedArray、字符串、Map 与 for…of 均不拦。
  */
 const isPlainArray = (services, object) => {
   const checker = services?.program?.getTypeChecker?.();
@@ -35,6 +35,11 @@ export const preferArrayMethods = {
           return;
         }
         if (isPlainArray(services, test.right.object)) {
+          context.report({ node, messageId: 'prefer' });
+        }
+      },
+      ForInStatement(node) {
+        if (isPlainArray(services, node.right)) {
           context.report({ node, messageId: 'prefer' });
         }
       },

@@ -778,7 +778,7 @@
       "title": "数组只存放按序排列的元素",
       "severity": "必须",
       "execution": {
-        "method": "ESLint `aigc/no-array-property`（TS 类型感知；JS 仅同一文件内数组字面量初始化的标识符）"
+        "method": "ESLint `aigc/no-array-property`（TS 类型感知；JS 数组字面量；含 computed 字符串字面量键）"
       },
       "category": "defect"
     },
@@ -787,7 +787,7 @@
       "title": "遍历数组优先用数组方法",
       "severity": "建议",
       "execution": {
-        "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知；热路径与 JS 无类型信息时由评审）"
+        "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；热路径与 JS 无类型信息时由评审）"
       },
       "category": "defect"
     },
@@ -805,7 +805,7 @@
       "title": "用展开语法或 concat 复制数组",
       "severity": "建议",
       "execution": {
-        "method": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制，例外 E9）"
+        "method": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制；E9 已按最严口径取消）"
       },
       "category": "defect"
     },
@@ -823,7 +823,7 @@
       "title": "转数字时用 Number() 并检查 NaN",
       "severity": "建议",
       "execution": {
-        "method": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN 或 isFinite 检查）"
+        "method": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN、isFinite 或 Number.isInteger 检查）"
       },
       "category": "defect"
     },

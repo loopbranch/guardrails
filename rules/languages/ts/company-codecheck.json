@@ -808,7 +808,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-086",
       "severity": "必须",
-      "mechanism": "ESLint `aigc/no-array-property`（TS 类型感知；JS 仅同一文件内数组字面量初始化的标识符）",
+      "mechanism": "ESLint `aigc/no-array-property`（TS 类型感知；JS 数组字面量；含 computed 字符串字面量键）",
       "status": "covered"
     },
     {
@@ -817,7 +817,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-087",
       "severity": "建议",
-      "mechanism": "ESLint `aigc/prefer-array-methods`（TS 类型感知；热路径与 JS 无类型信息时由评审）",
+      "mechanism": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；热路径与 JS 无类型信息时由评审）",
       "status": "covered"
     },
     {
@@ -835,7 +835,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-089",
       "severity": "建议",
-      "mechanism": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制，例外 E9）",
+      "mechanism": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制；E9 已按最严口径取消）",
       "status": "covered"
     },
     {
@@ -853,7 +853,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-091",
       "severity": "建议",
-      "mechanism": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN 或 isFinite 检查）",
+      "mechanism": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN、isFinite 或 Number.isInteger 检查）",
       "status": "covered"
     },
     {

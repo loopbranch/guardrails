@@ -29,7 +29,7 @@ const receivesOrigin = (node) => {
   return found;
 };
 
-const SKIP_FILE = /(?:[\\/]e2e[\\/]|\.(?:test|spec)\.)/u;
+const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 const isInlineFunction = (node) => {
   return node !== undefined && ['ArrowFunctionExpression', 'FunctionExpression'].includes(node.type);

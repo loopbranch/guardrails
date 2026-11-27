@@ -7,7 +7,7 @@
 const ALLOWED_HOSTS =
   /^(?:(?:[a-z0-9-]+\.)*(?:example|test|invalid|local|internal|localhost)|(?:[a-z0-9-]+\.)*example\.(?:com|net|org)|127\.0\.0\.1|0\.0\.0\.0|www\.w3\.org|json-schemastore\.org|cdn\.jsdelivr\.net|.*\.huaweicloud\.com|.*\.huawei\.com)$/u;
 // 只跳过 e2e 目录：真实环境联调夹具需要真实地址；单元测试同样受检，地址应使用占位域名。
-const SKIP_FILE = /[\\/]e2e[\\/]/u;
+const SKIP_FILE = /(?:^|[\\/])e2e[\\/]/u;
 const looksLikeHost = (host) => host.includes('.');
 
 /** 与平台口径一致：私有网段、回环、通配、组播与保留高位段不算“公网地址”。 */

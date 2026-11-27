@@ -2,11 +2,11 @@
  * G.TYP.15：其它类型转数字使用 Number()，并显式检查返回值是否为 NaN。
  * - 禁止 parseInt / parseFloat；
  * - Number(...) 的结果赋给变量后，同一函数内必须出现 isNaN / Number.isNaN 检查；
- *   isFinite / Number.isFinite 是更严格的前置判断（NaN 与 Infinity 都被拒绝），同样满足该口径。
+ *   isFinite / Number.isFinite 与 Number.isInteger 是更严格的前置判断（NaN、Infinity 与非整数都被拒绝），同样满足该口径。
  */
 const BANNED = new Set(['parseInt', 'parseFloat']);
-const NAN_CHECKS = new Set(['isNaN', 'isFinite']);
-const SKIP_FILE = /(?:[\\/]e2e[\\/]|\.(?:test|spec)\.)/u;
+const NAN_CHECKS = new Set(['isNaN', 'isFinite', 'isInteger']);
+const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 const nameOfCallee = (callee) => {
   if (callee.type === 'Identifier') {
@@ -66,7 +66,7 @@ export const numberConversion = {
     schema: [],
     messages: {
       banned: '禁止使用 {{name}}；请改用 Number() 并在使用前检查 NaN。',
-      unchecked: 'Number() 的结果 {{name}} 没有用 isNaN 或 isFinite 检查过。',
+      unchecked: 'Number() 的结果 {{name}} 没有用 isNaN、isFinite 或 Number.isInteger 检查过。',
     },
   },
   create(context) {
@@ -87,8 +87,8 @@ export const numberConversion = {
         if (parent?.type !== 'VariableDeclarator' || parent.id.type !== 'Identifier') {
           return;
         }
-        const owner = nearestFunction(node);
-        if (owner !== undefined && !checkedInScope(owner, parent.id.name)) {
+        const owner = nearestFunction(node) ?? context.sourceCode.ast;
+        if (!checkedInScope(owner, parent.id.name)) {
           context.report({ node, messageId: 'unchecked', data: { name: parent.id.name } });
         }
       },

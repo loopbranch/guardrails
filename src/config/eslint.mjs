@@ -135,6 +135,25 @@ export const eslintConfig = ({
   ];
 };
 
+/**
+ * 大写扩展名的文件（如 Foo.TS）不会被各语言的常规车道匹配，单列一条只做文件命名检查的车道，
+ * 保证 CC-063 的“扩展名小写”在 ESLint 的枚举范围内同样可达。
+ */
+export const fileNamingLane = () => {
+  return [
+    {
+      name: 'standards/file-naming-uppercase',
+      files: ['**/*.{TS,TSX,JS,JSX,MJS,MTS,CTS}'],
+      plugins: { aigc: aigcPlugin },
+      languageOptions: {
+        parser: tseslint.parser,
+        parserOptions: { ecmaFeatures: { jsx: true }, sourceType: 'module', ecmaVersion: 'latest' },
+      },
+      rules: { 'aigc/file-naming': 'error' },
+    },
+  ];
+};
+
 export const nodeGlobals = globals.node;
 export const browserGlobals = globals.browser;
 export const es2021Globals = globals.es2021;

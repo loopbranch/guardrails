@@ -7,7 +7,7 @@ const PATTERNS = [
   { pattern: /@author/u, label: '作者标记' },
 ];
 
-const SKIP_FILE = /(?:[\\/]e2e[\\/]|\.(?:test|spec)\.)/u;
+const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 export const noDeveloperInfo = {
   meta: {

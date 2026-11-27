@@ -3,7 +3,6 @@
  * 两个数据库无法判断写入内容是否敏感，因此一律拦截；需要持久化时走服务端或白名单方案。
  */
 const BANNED = new Set(['openDatabase', 'indexedDB', 'webkitIndexedDB']);
-const BANNED_MEMBERS = new Set(['indexedDB', 'webkitIndexedDB']);
 
 export const noUnsafeStorage = {
   meta: {
@@ -17,11 +16,6 @@ export const noUnsafeStorage = {
       Identifier(node) {
         if (BANNED.has(node.name)) {
           context.report({ node, messageId: 'banned', data: { name: node.name } });
-        }
-      },
-      MemberExpression(node) {
-        if (!node.computed && node.property.type === 'Identifier' && BANNED_MEMBERS.has(node.property.name)) {
-          context.report({ node, messageId: 'banned', data: { name: node.property.name } });
         }
       },
     };

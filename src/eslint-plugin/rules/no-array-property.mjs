@@ -4,6 +4,19 @@
  */
 const NUMERIC = /^(?:\d+|length)$/u;
 
+const propertyName = (member) => {
+  if (!member.computed && member.property.type === 'Identifier') {
+    return member.property.name;
+  }
+  if (member.computed && member.property.type === 'Literal' && typeof member.property.value === 'string') {
+    return member.property.value;
+  }
+  if (member.computed && member.property.type === 'TemplateLiteral' && member.property.expressions.length === 0) {
+    return member.property.quasis[0]?.value.cooked;
+  }
+  return undefined;
+};
+
 const isArrayLiteralName = (scope, name) => {
   let current = scope;
   while (current !== null && current !== undefined) {
@@ -40,11 +53,11 @@ export const noArrayProperty = {
     const services = context.sourceCode.parserServices;
     return {
       AssignmentExpression(node) {
-        if (node.left.type !== 'MemberExpression' || node.left.computed || node.left.property.type !== 'Identifier') {
+        if (node.left.type !== 'MemberExpression') {
           return;
         }
-        const property = node.left.property.name;
-        if (NUMERIC.test(property)) {
+        const property = propertyName(node.left);
+        if (property === undefined || NUMERIC.test(property)) {
           return;
         }
         const typed = isArrayType(services, node.left.object);

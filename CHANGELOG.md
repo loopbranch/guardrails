@@ -2,6 +2,7 @@
 
 ## 0.2.2
 
+- CC-087 / G.TYP.08：去掉“热路径可保留索引 for”的说明，与父仓 `quality.yaml` C2 口径一致；JS 无类型信息仍由评审覆盖。
 - 启用 `aigc/no-array-mutation-in-iteration`（G.TYP.09），覆盖数组方法回调、`for…of` 与按下标遍历的 `for` 循环，并识别 `length` 赋值清空；不再跳过 `e2e/`（实测 0 命中）。
 - `aigc/no-public-address` 不再跳过 `e2e/`（实测 18 个文件 0 命中），单元测试与 e2e 统一受检。
 - `aigc/postmessage-origin`、`aigc/no-commented-code`、`aigc/no-developer-info`、`aigc/number-conversion` 不再跳过 `e2e/` 与测试文件；测试初始化里的 10 处 `Number()` 补上整数/有限性校验。

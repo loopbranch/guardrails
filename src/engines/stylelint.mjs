@@ -1,9 +1,8 @@
 // stylelint 执行器：SCSS 语言的缺陷来源；缺失时明确失败。
-import { spawnSync } from 'node:child_process';
-import { resolveBinary } from './binary.mjs';
+import { spawnTool } from './binary.mjs';
 
 const run = (args, cwd) => {
-  const result = spawnSync(resolveBinary('stylelint', cwd), ['--formatter', 'json', '--allow-empty-input', ...args], {
+  const result = spawnTool('stylelint', ['--formatter', 'json', '--allow-empty-input', ...args], {
     cwd,
     encoding: 'utf8',
   });

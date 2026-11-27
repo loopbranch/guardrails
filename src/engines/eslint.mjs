@@ -1,9 +1,8 @@
 // ESLint 执行器：读取项目自身配置；缺失时明确失败。
-import { spawnSync } from 'node:child_process';
-import { resolveBinary } from './binary.mjs';
+import { spawnTool } from './binary.mjs';
 
 const run = (args, cwd) => {
-  const result = spawnSync(resolveBinary('eslint', cwd), ['--format', 'json', ...args], { cwd, encoding: 'utf8' });
+  const result = spawnTool('eslint', ['--format', 'json', ...args], { cwd, encoding: 'utf8' });
   if (result.error?.code === 'ENOENT') {
     throw new Error('缺少 eslint 执行器：请在项目中安装 eslint');
   }

@@ -1,9 +1,8 @@
 // sqlfluff 执行器：SQL 语言的格式化与缺陷来源；缺 Python 或 sqlfluff 时明确失败。
-import { spawnSync } from 'node:child_process';
-import { resolveBinary } from './binary.mjs';
+import { spawnTool } from './binary.mjs';
 
 const run = (args, cwd) => {
-  const result = spawnSync(resolveBinary('sqlfluff', cwd), args, { cwd, encoding: 'utf8' });
+  const result = spawnTool('sqlfluff', args, { cwd, encoding: 'utf8' });
   if (result.error?.code === 'ENOENT') {
     throw new Error('缺少 sqlfluff 执行器：请安装 Python 3 与 sqlfluff');
   }

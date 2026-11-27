@@ -1,11 +1,10 @@
 /**
  * G.TYP.09：不要在数组遍历中增删其元素。
  * 覆盖数组方法回调、for…of 与按下标遍历的 for 循环；按完整成员链比较，避免把 `files` 与 `group.files` 当成同一数组。
- * e2e 目录仍放行（联调夹具会直接操纵真实响应数据）。
+ * 包含单元测试与 e2e；e2e 当前 0 命中，不保留目录例外。
  */
 const ITERATION_METHODS = new Set(['forEach', 'map', 'filter', 'some', 'every', 'reduce', 'reduceRight', 'flatMap']);
 const MUTATING_METHODS = new Set(['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse', 'fill', 'copyWithin']);
-const SKIP_FILE = /[\\/]e2e[\\/]/u;
 
 const chainOf = (node) => {
   if (node === null || node === undefined) {
@@ -84,9 +83,6 @@ export const noArrayMutationInIteration = {
     messages: { mutate: '遍历 {{name}} 时不要增删它的元素；先复制或构造新数组。' },
   },
   create(context) {
-    if (SKIP_FILE.test(context.filename)) {
-      return {};
-    }
     const reportIfMutated = (chain, body, node) => {
       if (chain !== undefined && body !== undefined && mutationChains(body).includes(chain)) {
         context.report({ node, messageId: 'mutate', data: { name: shownName(chain) } });

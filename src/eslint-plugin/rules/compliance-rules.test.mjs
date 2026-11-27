@@ -108,9 +108,15 @@ describe('公司规范新增机检规则', () => {
       'items.forEach((item) => count.push(item))',
       'for (const item of items) { count.push(item); }',
       'for (let i = 0; i < items.length; i += 1) { use(items[i]); }',
+      { code: 'for (const item of items) { count.push(item); }', filename: 'e2e/checkout.ts' },
     ],
     invalid: [
       { code: 'items.forEach((item) => items.push(item))', errors: [{ messageId: 'mutate' }] },
+      {
+        code: 'for (const item of items) { items.push(item); }',
+        filename: 'e2e/checkout.ts',
+        errors: [{ messageId: 'mutate' }],
+      },
       { code: 'for (const item of items) { items.push(item); }', errors: [{ messageId: 'mutate' }] },
       { code: 'for (let i = 0; i < items.length; i += 1) { items.splice(i, 1); }', errors: [{ messageId: 'mutate' }] },
     ],

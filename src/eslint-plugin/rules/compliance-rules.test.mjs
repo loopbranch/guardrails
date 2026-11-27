@@ -46,8 +46,8 @@ describe('公司规范新增机检规则', () => {
       "const privateUrl = 'http://10.0.0.8:8080'",
       "const mail = 'aigc@xclaw.internal'",
       "const allowedPair = 'aigc@xclaw.internal reviewer@panel.example'",
-      // e2e 联调夹具需要真实地址，仍按目录放行。
-      { code: "const url = 'https://api.vendor-cloud.net/x'", filename: 'e2e/checkout.spec.ts' },
+      // e2e 同样受检；占位域名仍放行。
+      { code: "const url = 'https://api.vendor.example/x'", filename: 'e2e/checkout.spec.ts' },
     ],
     invalid: [
       { code: "const url = 'https://api.vendor-cloud.net/x'", errors: [{ messageId: 'address' }] },
@@ -69,6 +69,12 @@ describe('公司规范新增机检规则', () => {
       {
         code: "const panel = 'https://117.78.11.88/?token=aigc-test'",
         filename: 'src/index.test.ts',
+        errors: [{ messageId: 'address' }],
+      },
+      // e2e 也不再按目录放行。
+      {
+        code: "const url = 'https://api.vendor-cloud.net/x'",
+        filename: 'e2e/checkout.spec.ts',
         errors: [{ messageId: 'address' }],
       },
     ],

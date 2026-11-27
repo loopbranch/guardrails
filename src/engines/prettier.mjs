@@ -1,11 +1,10 @@
 // Prettier 执行器：缺失时明确失败，不降级为 unsupported。
-import { spawnSync } from 'node:child_process';
-import { resolveBinary } from './binary.mjs';
+import { spawnTool } from './binary.mjs';
 
 export const PRETTIER_RULE = 'std/format';
 
 const run = (args, cwd) => {
-  const result = spawnSync(resolveBinary('prettier', cwd), args, { cwd, encoding: 'utf8' });
+  const result = spawnTool('prettier', args, { cwd, encoding: 'utf8' });
   if (result.error !== undefined && result.error.code === 'ENOENT') {
     throw new Error('缺少 prettier 执行器：请在项目中安装 prettier');
   }

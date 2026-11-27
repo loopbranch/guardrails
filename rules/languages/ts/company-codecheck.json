@@ -817,7 +817,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-087",
       "severity": "建议",
-      "mechanism": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；热路径与 JS 无类型信息时由评审）",
+      "mechanism": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；JS 无类型信息时由评审）",
       "status": "covered"
     },
     {

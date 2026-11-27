@@ -1375,11 +1375,11 @@
         "TypeScript",
         "JavaScript"
       ],
-      "summary": "遍历数组优先用 `map`、`filter`、`reduce`、`forEach` 等方法或 `for-of`，不用 `for-in`，后者取到的是字符串下标，还可能带上非数字属性。对性能敏感的热路径可以保留普通 `for` 循环。",
+      "summary": "遍历数组优先用 `map`、`filter`、`reduce`、`forEach` 等方法或 `for-of`，不用 `for-in`，后者取到的是字符串下标，还可能带上非数字属性。",
       "correct": "const subtotal = cart.reduce((acc, entry) => acc + entry.cost, 0);",
       "incorrect": "let subtotal = 0;\nfor (const idx in cart) {\n  subtotal += cart[idx].cost;\n}",
       "execution": {
-        "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；热路径与 JS 无类型信息时由评审）"
+        "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；JS 无类型信息时由评审）"
       },
       "category": "defect"
     },

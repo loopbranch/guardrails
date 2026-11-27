@@ -47,6 +47,7 @@ describe('公司规范新增机检规则', () => {
         "const docker = 'http://host.docker.internal:4199/x'",
         "const privateUrl = 'http://10.0.0.8:8080'",
         "const mail = 'aigc@xclaw.internal'",
+        "const allowedPair = 'aigc@xclaw.internal reviewer@panel.example'",
         // e2e 联调夹具需要真实地址，仍按目录放行。
         { code: "const url = 'https://api.vendor-cloud.net/x'", filename: 'e2e/checkout.spec.ts' },
       ],
@@ -54,6 +55,18 @@ describe('公司规范新增机检规则', () => {
         { code: "const url = 'https://api.vendor-cloud.net/x'", errors: [{ messageId: 'address' }] },
         { code: "const testNet = '192.0.2.0'", errors: [{ messageId: 'address' }] },
         { code: 'const mail = "dev.user@company.com"', errors: [{ messageId: 'address' }] },
+        // 同一字符串里既有私有 IP 也有公网 IP 时，同样要逐个判断。
+        { code: "const mixedIps = '10.0.0.8 117.78.11.88'", errors: [{ messageId: 'address' }] },
+        { code: "const mixedIps = '117.78.11.88 10.0.0.8'", errors: [{ messageId: 'address' }] },
+        // 同一字符串里既有放行邮箱也有真实邮箱时，必须逐个判断，不能只查第一个。
+        {
+          code: "const mixed = 'aigc@xclaw.internal partner@vendor-mail.net'",
+          errors: [{ messageId: 'address' }],
+        },
+        {
+          code: "const mixed = 'partner@vendor-mail.net aigc@xclaw.internal'",
+          errors: [{ messageId: 'address' }],
+        },
         // 单元测试同样受检：夹具里的真实地址要改成占位域名。
         {
           code: "const panel = 'https://117.78.11.88/?token=aigc-test'",

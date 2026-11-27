@@ -24,7 +24,9 @@ const isLocalOrPrivate = (ip) => {
 };
 const URL_PATTERN = /https?:\/\/[^\s"'`)]+/giu;
 const IPV4_PATTERN = /\b(?:\d{1,3}\.){3}\d{1,3}\b/u;
-const EMAIL_PATTERN = /[\w.+-]+@[a-z][\w-]*(?:\.[a-z][\w-]*)+/iu;
+// 迭代用独立全局副本：IPV4_PATTERN 还会在 isAllowedHost 里做一次性 test，带 g 会产生 lastIndex 状态。
+const IPV4_ALL_PATTERN = /\b(?:\d{1,3}\.){3}\d{1,3}\b/gu;
+const EMAIL_PATTERN = /[\w.+-]+@[a-z][\w-]*(?:\.[a-z][\w-]*)+/giu;
 
 /** 主机放行：保留域名与文档站点，以及 URL 形式出现的私有网段地址（如 `http://10.0.0.8:8080`）。 */
 const isAllowedHost = (host) => ALLOWED_HOSTS.test(host) || (IPV4_PATTERN.test(host) && isLocalOrPrivate(host));
@@ -59,15 +61,19 @@ export const noPublicAddress = {
           context.report({ node, messageId: 'address', data: { value: url } });
         }
       }
-      if (URL_PATTERN.test(text) === false && IPV4_PATTERN.test(text)) {
-        const ip = text.match(IPV4_PATTERN)?.[0];
-        if (ip !== undefined && !isLocalOrPrivate(ip)) {
-          context.report({ node, messageId: 'address', data: { value: ip } });
+      // 与邮箱同理：一条字符串里可能先出现私有网段、后出现真实公网 IP，必须逐个判断。
+      if (URL_PATTERN.test(text) === false) {
+        for (const ip of text.match(IPV4_ALL_PATTERN) ?? []) {
+          if (!isLocalOrPrivate(ip)) {
+            context.report({ node, messageId: 'address', data: { value: ip } });
+          }
         }
       }
-      const email = text.match(EMAIL_PATTERN)?.[0];
-      if (email !== undefined && !isAllowedHost(domainOf(email))) {
-        context.report({ node, messageId: 'address', data: { value: email } });
+      // 逐个匹配判断：同一条字符串里可能既有放行的保留域名邮箱，也有应拦截的真实地址。
+      for (const email of text.match(EMAIL_PATTERN) ?? []) {
+        if (!isAllowedHost(domainOf(email))) {
+          context.report({ node, messageId: 'address', data: { value: email } });
+        }
       }
     };
 

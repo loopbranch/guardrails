@@ -29,7 +29,6 @@ const receivesOrigin = (node) => {
   return found;
 };
 
-const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 const isInlineFunction = (node) => {
   return node !== undefined && ['ArrowFunctionExpression', 'FunctionExpression'].includes(node.type);
@@ -46,9 +45,6 @@ export const postmessageOrigin = {
     },
   },
   create(context) {
-    if (SKIP_FILE.test(context.filename)) {
-      return {};
-    }
     return {
       CallExpression(node) {
         const callee = node.callee;

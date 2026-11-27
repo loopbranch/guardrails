@@ -82,12 +82,18 @@ describe('公司规范新增机检规则', () => {
 
   tester.run('no-developer-info', noDeveloperInfo, {
     valid: ['// 说明：处理超时'],
-    invalid: [{ code: '// 作者：张三 13800138000', errors: [{ messageId: 'info' }] }],
+    invalid: [
+      { code: '// 作者：张三 13800138000', errors: [{ messageId: 'info' }] },
+      { code: '// 作者：张三 13800138000', filename: 'e2e/checkout.ts', errors: [{ messageId: 'info' }] },
+    ],
   });
 
   tester.run('no-commented-code', noCommentedCode, {
     valid: ['// 这里解释业务含义', '// 变量含义不是代码'],
-    invalid: [{ code: '// const value = await load();', errors: [{ messageId: 'commented' }] }],
+    invalid: [
+      { code: '// const value = await load();', errors: [{ messageId: 'commented' }] },
+      { code: '// const value = await load();', filename: 'e2e/checkout.ts', errors: [{ messageId: 'commented' }] },
+    ],
   });
 
   tester.run('postmessage-origin', postmessageOrigin, {
@@ -98,6 +104,11 @@ describe('公司规范新增机检规则', () => {
     invalid: [
       { code: "source.postMessage(data, '*')", errors: [{ messageId: 'wildcard' }] },
       { code: "window.addEventListener('message', (event) => handle(event.data))", errors: [{ messageId: 'unverified' }] },
+      {
+        code: "source.postMessage(data, '*')",
+        filename: 'e2e/checkout.ts',
+        errors: [{ messageId: 'wildcard' }],
+      },
     ],
   });
 
@@ -157,6 +168,16 @@ describe('公司规范新增机检规则', () => {
     invalid: [
       { code: 'const count = parseInt(text, 10);', errors: [{ messageId: 'banned' }] },
       { code: 'const value = Number(raw);', errors: [{ messageId: 'unchecked' }] },
+      {
+        code: 'const count = parseInt(text, 10);',
+        filename: 'src/count.test.ts',
+        errors: [{ messageId: 'banned' }],
+      },
+      {
+        code: 'const count = parseInt(text, 10);',
+        filename: 'e2e/checkout.ts',
+        errors: [{ messageId: 'banned' }],
+      },
     ],
   });
 

@@ -7,7 +7,6 @@ const PATTERNS = [
   { pattern: /@author/u, label: '作者标记' },
 ];
 
-const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 export const noDeveloperInfo = {
   meta: {
@@ -17,9 +16,6 @@ export const noDeveloperInfo = {
     messages: { info: '{{label}}属于开发者个人信息，请从交付代码中删除。' },
   },
   create(context) {
-    if (SKIP_FILE.test(context.filename)) {
-      return {};
-    }
     const check = (node, text) => {
       for (const { pattern, label } of PATTERNS) {
         if (pattern.test(text)) {

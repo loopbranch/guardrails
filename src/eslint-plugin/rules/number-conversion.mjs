@@ -6,7 +6,6 @@
  */
 const BANNED = new Set(['parseInt', 'parseFloat']);
 const NAN_CHECKS = new Set(['isNaN', 'isFinite', 'isInteger']);
-const SKIP_FILE = /(?:(?:^|[\\/])e2e[\\/]|\.(?:test|spec)\.)/u;
 
 const nameOfCallee = (callee) => {
   if (callee.type === 'Identifier') {
@@ -70,9 +69,6 @@ export const numberConversion = {
     },
   },
   create(context) {
-    if (SKIP_FILE.test(context.filename)) {
-      return {};
-    }
     return {
       CallExpression(node) {
         const name = nameOfCallee(node.callee);

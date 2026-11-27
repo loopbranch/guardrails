@@ -4,6 +4,7 @@
 
 - 启用 `aigc/no-array-mutation-in-iteration`（G.TYP.09），覆盖数组方法回调、`for…of` 与按下标遍历的 `for` 循环，并识别 `length` 赋值清空；不再跳过 `e2e/`（实测 0 命中）。
 - `aigc/no-public-address` 不再跳过 `e2e/`（实测 18 个文件 0 命中），单元测试与 e2e 统一受检。
+- `aigc/postmessage-origin`、`aigc/no-commented-code`、`aigc/no-developer-info`、`aigc/number-conversion` 不再跳过 `e2e/` 与测试文件；测试初始化里的 10 处 `Number()` 补上整数/有限性校验。
 - 新增 `aigc/file-naming`（G.NAM.07）：扩展名必须小写；文件名使用小写短横线分段，React 组件文件允许 PascalCase，生成物 `*.module.d.scss.ts` 放行。
 - 公司规范映射：7 条原「仅评审/检查清单」规则改为机检；状态更新为 87 covered / 7 difference / 3 conditional，`review-only` 清零。
 - 修正规则可达性：`file-naming` 增加大写扩展名车道；`no-array-property` 支持 computed 字符串键；`prefer-array-methods` 覆盖 `for…in`；`number-conversion` 支持顶层与 `Number.isInteger` 检查；`no-unsafe-storage` 去重。

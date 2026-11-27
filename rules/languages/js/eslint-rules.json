@@ -8,7 +8,15 @@
     "prefer-const": "error",
     "no-implicit-coercion": "error",
     "no-lonely-if": "error",
-    "no-console": "error"
+    "no-console": "error",
+    "max-len": [
+      "error",
+      {
+        "code": 140,
+        "ignoreUrls": true,
+        "ignoreComments": true
+      }
+    ]
   },
   "codecheck": {
     "aigc/arrow-function-naming": "error",
@@ -25,16 +33,10 @@
       "error",
       {
         "groups": [
-          ["+", "-"],
-          ["*", "/", "%"],
-          ["*", "**"],
-          ["/", "**"],
-          ["+", "**"],
-          ["-", "**"],
-          ["%", "**"],
-          ["&", "|", "^"],
-          ["<<", ">>", ">>>"],
-          ["==", "!=", "===", "!=="],
+          ["+", "-", "*", "/", "%", "**"],
+          ["&", "|", "^", "<<", ">>", ">>>"],
+          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+          ["&&", "||", "??"],
           ["in", "instanceof"]
         ]
       }
@@ -290,7 +292,6 @@
     "key-spacing",
     "keyword-spacing",
     "linebreak-style",
-    "max-len",
     "no-multi-spaces",
     "no-trailing-spaces",
     "object-curly-spacing",

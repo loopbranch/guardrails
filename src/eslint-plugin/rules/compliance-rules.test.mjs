@@ -34,11 +34,32 @@ describe('公司规范新增机检规则', () => {
 
   it('G.OTH.05 拦截公网地址与邮箱，放行本机地址', () => {
     tester.run('no-public-address', noPublicAddress, {
-      valid: ["const local = 'http://localhost:3000/x'", "const ip = '127.0.0.1'", "const cidr = '10.0.0.0/8'"],
+      valid: [
+        "const local = 'http://localhost:3000/x'",
+        "const ip = '127.0.0.1'",
+        "const cidr = '10.0.0.0/8'",
+        // 保留域名与内网主机是测试夹具的标准占位写法，不算公网地址。
+        "const placeholder = 'https://xclaw.example/?token=test'",
+        "const placeholderTld = 'https://template.example.invalid/cover.png'",
+        "const placeholderTest = 'https://example.test/preview'",
+        "const placeholderExample = 'https://xclaw.example.com/api'",
+        "const intranet = 'http://storage.internal:9000'",
+        "const docker = 'http://host.docker.internal:4199/x'",
+        "const privateUrl = 'http://10.0.0.8:8080'",
+        "const mail = 'aigc@xclaw.internal'",
+        // e2e 联调夹具需要真实地址，仍按目录放行。
+        { code: "const url = 'https://api.vendor-cloud.net/x'", filename: 'e2e/checkout.spec.ts' },
+      ],
       invalid: [
         { code: "const url = 'https://api.vendor-cloud.net/x'", errors: [{ messageId: 'address' }] },
         { code: "const testNet = '192.0.2.0'", errors: [{ messageId: 'address' }] },
         { code: 'const mail = "dev.user@company.com"', errors: [{ messageId: 'address' }] },
+        // 单元测试同样受检：夹具里的真实地址要改成占位域名。
+        {
+          code: "const panel = 'https://117.78.11.88/?token=aigc-test'",
+          filename: 'src/index.test.ts',
+          errors: [{ messageId: 'address' }],
+        },
       ],
     });
   });
@@ -96,7 +117,10 @@ describe('公司规范新增机检规则', () => {
 
   it('G.TYP.15 拦截 parseInt/parseFloat 与未检查 NaN 的 Number()', () => {
     tester.run('number-conversion', numberConversion, {
-      valid: ['const value = Number(raw); if (Number.isNaN(value)) { return; }'],
+      valid: [
+        'const value = Number(raw); if (Number.isNaN(value)) { return; }',
+        'const value = Number(raw); if (Number.isFinite(value) === false) { throw new Error("bad"); }',
+      ],
       invalid: [
         { code: 'const count = parseInt(text, 10);', errors: [{ messageId: 'banned' }] },
         { code: 'const value = Number(raw);', errors: [{ messageId: 'unchecked' }] },

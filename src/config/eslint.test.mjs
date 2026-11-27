@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { URL } from 'node:url';
 import { eslintConfig, loadRules } from './eslint.mjs';
 
-const FORMATTING_RULES = ['quotes', 'indent', 'semi', 'max-len', 'comma-dangle', 'object-curly-spacing'];
+const FORMATTING_RULES = ['quotes', 'indent', 'semi', 'comma-dangle', 'object-curly-spacing'];
 
 test('源码车道带复杂度与函数行数阈值', () => {
   const config = eslintConfig({ language: 'ts', files: ['**/*.ts'], environment: {}, typeAware: true });
@@ -23,6 +23,23 @@ test('格式类规则不进入 ESLint', () => {
     assert.equal(Object.hasOwn(rules.codecheck, name), false, `${name} 应由 Prettier 负责`);
   }
   assert.ok(rules.formattingRuleNames.length >= 10);
+});
+
+test('行宽由 ESLint 机检，字符串与模板串计入长度', () => {
+  const rules = loadRules('ts');
+  const [, options] = rules.style['max-len'];
+  assert.equal(options.code, 140);
+  assert.equal(options.ignoreStrings, undefined);
+  assert.equal(options.ignoreTemplateLiterals, undefined);
+  assert.equal(rules.formattingRuleNames.includes('max-len'), false);
+});
+
+test('混合运算符按同类运算符分组机检，避免分组写反导致漏报', () => {
+  const rules = loadRules('ts');
+  const [severity, { groups }] = rules.codecheck['no-mixed-operators'];
+  assert.equal(severity, 'error');
+  assert.deepEqual(groups[0], ['+', '-', '*', '/', '%', '**']);
+  assert.equal(groups.some((group) => group.includes('&&') && group.includes('||')), true);
 });
 
 test('js 车道不带类型感知', () => {

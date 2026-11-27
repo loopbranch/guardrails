@@ -333,7 +333,7 @@
       "title": "混用运算符时用括号表明优先级",
       "severity": "建议",
       "execution": {
-        "method": "ESLint `no-mixed-operators`（只启用 `**` 与其它算术运算符的混用组，平台实际范围）；其余混用由 clean-code 评审"
+        "method": "ESLint `no-mixed-operators`（按默认五组：算术、位运算、比较、逻辑、`in`/`instanceof`）；Prettier 会删除冗余括号，修复方式是提取有业务含义的命名中间量"
       },
       "category": "defect"
     },
@@ -360,7 +360,7 @@
       "title": "单行不宜过长",
       "severity": "建议",
       "execution": {
-        "method": "Prettier printWidth 140；不设 max-len"
+        "method": "ESLint `max-len`（code 140，字符串与模板字符串计入，忽略 URL 与整行注释）；代码折行仍由 Prettier printWidth 140 负责"
       },
       "category": "defect"
     },

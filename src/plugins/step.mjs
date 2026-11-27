@@ -2,11 +2,17 @@
 import process from 'node:process';
 import { changedFiles } from '../changed.mjs';
 import { loadLanguages, resolveLanguage } from '../registry.mjs';
-import { runMetrics, runTask } from '../run.mjs';
+import { groupByLanguage, runMetrics, runTask } from '../run.mjs';
 import { buildSarif, verdictOf } from '../sarif.mjs';
 
 const TOOL = { name: '@fantasticit/guardrails', version: '0.0.0' };
 const TASKS = ['format', 'lint', 'codecheck'];
+// 每个任务由哪些子任务组成；只有这些子任务对该语言全部 unsupported 时，该语言才算没执行该任务。
+const REQUIRED_TASKS = {
+  format: ['format'],
+  lint: ['lint'],
+  codecheck: ['lint', 'metrics'],
+};
 
 const filesFromArgs = (argv) => {
   return argv.filter((item) => !item.startsWith('--'));
@@ -30,6 +36,25 @@ const collect = ({ task, files, cwd }) => {
   };
 };
 
+/**
+ * 三态结论按语言聚合：命中文件里没有任何一种语言真正执行该任务时才判 unsupported。
+ * 混合语言只跳过一部分（如 `.md` 不参与 lint）时按已执行部分判 pass/fail，跳过项仍写入 SARIF 通知。
+ */
+export const verdictOfStep = ({ task, files, findings, skipped }) => {
+  const required = REQUIRED_TASKS[task];
+  const skippedTasksByLanguage = new Map();
+  for (const entry of skipped) {
+    skippedTasksByLanguage.set(entry.language, [...(skippedTasksByLanguage.get(entry.language) ?? []), entry.task]);
+  }
+  const languages = [...groupByLanguage(loadLanguages(), files).keys()];
+  const isUnsupportedLanguage = (languageId) => {
+    const skippedTasks = skippedTasksByLanguage.get(languageId) ?? [];
+    return required.every((requiredTask) => skippedTasks.includes(requiredTask));
+  };
+  const unsupported = languages.length > 0 && languages.every(isUnsupportedLanguage);
+  return verdictOf({ findings, unsupported });
+};
+
 export const runStep = (task) => {
   if (!TASKS.includes(task)) {
     throw new Error(`未知任务：${task}`);
@@ -47,7 +72,7 @@ export const runStep = (task) => {
   const { findings, skipped } = collect({ task, files, cwd });
   const sarif = buildSarif({ toolName: TOOL.name, toolVersion: TOOL.version, findings, skipped });
   process.stdout.write(`${JSON.stringify(sarif)}\n`);
-  const verdict = verdictOf({ findings, unsupported: skipped.length > 0 && skipped.length === files.length });
+  const verdict = verdictOfStep({ task, files, findings, skipped });
   process.stdout.write(`结论：${verdict}\n`);
   process.exitCode = verdict === 'fail' ? 1 : 0;
 };

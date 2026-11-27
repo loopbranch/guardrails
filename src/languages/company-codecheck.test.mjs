@@ -19,7 +19,7 @@ test('状态分布与差异说明保持稳定', () => {
     accumulator[rule.status] = (accumulator[rule.status] ?? 0) + 1;
     return accumulator;
   }, {});
-  assert.deepEqual(counts, { covered: 82, difference: 7, 'review-only': 5, conditional: 3 });
+  assert.deepEqual(counts, { covered: 83, difference: 7, 'review-only': 4, conditional: 3 });
   const differences = data.rules.filter((rule) => rule.difference !== undefined);
   assert.ok(differences.length >= 7, '差异条目应保留口径说明');
 });

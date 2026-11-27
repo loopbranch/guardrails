@@ -352,9 +352,9 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-037",
       "severity": "建议",
-      "mechanism": "ESLint `no-mixed-operators`（只启用 `**` 与其它算术运算符的混用组，平台实际范围）；其余混用由 clean-code 评审",
+      "mechanism": "ESLint `no-mixed-operators`（按默认五组：算术、位运算、比较、逻辑、`in`/`instanceof`）",
       "status": "difference",
-      "difference": "公司规范要求所有混合运算符加括号；本仓已机检算术、位运算、比较混用，逻辑运算符（&&/\\|\\|/??）混用尚未纳入，纳入需整改约 922 处。"
+      "difference": "公司规范要求所有混合运算符加括号；Prettier 会删除仅用于澄清优先级的冗余括号，本仓改为提取有业务含义的命名中间量并保持从左到右求值顺序，机检范围与公司规范一致，修复写法不同。"
     },
     {
       "id": "G.EXP.05",
@@ -380,7 +380,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-040",
       "severity": "建议",
-      "mechanism": "Prettier printWidth 140；不设 max-len",
+      "mechanism": "ESLint `max-len`（code 140，字符串与模板字符串计入，忽略 URL 与整行注释）+ Prettier printWidth 140 折行",
       "status": "covered"
     },
     {
@@ -689,7 +689,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-073",
       "severity": "必须",
-      "mechanism": "ESLint `aigc/no-public-address`（平台口径：除私有/回环/通配/组播外一律拦）",
+      "mechanism": "ESLint `aigc/no-public-address`（平台口径：除私有/回环/通配/组播外一律拦；RFC 2606/6761 保留域名与 .internal/.local 内网主机放行，仅 e2e 目录跳过）",
       "status": "covered",
       "difference": "公司规范当前工具只查 email/IP；本仓安全评审同时覆盖公网 URL（标准协议地址除外）。"
     },
@@ -853,8 +853,8 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-091",
       "severity": "建议",
-      "mechanism": "clean-code 评审",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN 或 isFinite 检查）",
+      "status": "covered"
     },
     {
       "id": "G.WSQ.01",

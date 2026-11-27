@@ -1,18 +1,19 @@
 {
   "name": "@fantasticit/guardrails",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": false,
   "type": "module",
   "description": "语言优先的格式化、缺陷与度量检查插件包",
   "exports": {
     ".": "./src/index.mjs",
     "./config/eslint": "./src/config/eslint.mjs",
+    "./eslint-plugin": "./src/eslint-plugin/index.mjs",
     "./format-defaults": "./rules/format-defaults.json",
     "./stylelint-config": "./rules/languages/scss/stylelint.json",
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "node --test src/*.test.mjs src/metrics/*.test.mjs src/config/*.test.mjs src/engines/*.test.mjs",
+    "test": "node --test src/*.test.mjs src/languages/*.test.mjs src/metrics/*.test.mjs src/config/*.test.mjs src/engines/*.test.mjs src/plugins/*.test.mjs",
     "typecheck": "node --check src/index.mjs"
   },
   "peerDependencies": {

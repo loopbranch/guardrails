@@ -1,9 +1,11 @@
 /**
  * G.TYP.15：其它类型转数字使用 Number()，并显式检查返回值是否为 NaN。
  * - 禁止 parseInt / parseFloat；
- * - Number(...) 的结果赋给变量后，同一函数内必须出现 isNaN/Number.isNaN 检查。
+ * - Number(...) 的结果赋给变量后，同一函数内必须出现 isNaN / Number.isNaN 检查；
+ *   isFinite / Number.isFinite 是更严格的前置判断（NaN 与 Infinity 都被拒绝），同样满足该口径。
  */
 const BANNED = new Set(['parseInt', 'parseFloat']);
+const NAN_CHECKS = new Set(['isNaN', 'isFinite']);
 const SKIP_FILE = /(?:[\\/]e2e[\\/]|\.(?:test|spec)\.)/u;
 
 const nameOfCallee = (callee) => {
@@ -24,7 +26,7 @@ const checkedInScope = (functionNode, identifierName) => {
     }
     if (
       node.type === 'CallExpression' &&
-      ['isNaN'].includes(nameOfCallee(node.callee)) &&
+      NAN_CHECKS.has(nameOfCallee(node.callee)) &&
       node.arguments.some((argument) => argument.type === 'Identifier' && argument.name === identifierName)
     ) {
       checked = true;
@@ -64,7 +66,7 @@ export const numberConversion = {
     schema: [],
     messages: {
       banned: '禁止使用 {{name}}；请改用 Number() 并在使用前检查 NaN。',
-      unchecked: 'Number() 的结果 {{name}} 没有用 isNaN 检查过。',
+      unchecked: 'Number() 的结果 {{name}} 没有用 isNaN 或 isFinite 检查过。',
     },
   },
   create(context) {

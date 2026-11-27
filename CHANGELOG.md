@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- `no-mixed-operators` 改回同类运算符一组的默认分组（算术、位运算、比较、逻辑、`in`/`instanceof`）；原分组写反导致 `+` 与 `*` 等混用一条都不报。
+- 新增 `max-len`（code 140）：字符串与模板字符串计入长度，忽略 URL 与整行注释；由 ESLint 补 Prettier 折不动字符串、正则与长文本的缺口。
+- `aigc/no-public-address`：`*.test.*` / `*.spec.*` 不再跳过（只保留 `e2e/` 目录）；放行 RFC 2606/6761 保留域名、`example.com` 子域与 `.internal` / `.local` 内网主机；URL 中的私有网段 IP、保留域名邮箱不再误报。
+- `aigc/number-conversion`：`isFinite` / `Number.isFinite` 视为合法的 NaN 检查（比 isNaN 更严格）。
+- 步骤层三态结论按语言聚合：混合语言中只有部分语言不支持该任务时按已执行部分判 pass/fail，只有全部语言都不支持才判 `unsupported`。
+- 测试入口补齐 `src/languages` 与 `src/plugins`；新增上游 CI 工作流。
+
 ## 0.1.1
 
 - 引入公司 JS/TS CodeCheck 规范映射（97 条去重规则），标注 73 条已同义机检、8 条口径差异、13 条仅评审、3 条按框架条件适用。

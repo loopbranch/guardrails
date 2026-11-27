@@ -1,11 +1,21 @@
 {
-  "$comment": "由 control/rules/codecheck-catalog.json 抽取并按类别分档；metric 条目对应度量指标，checklist 条目不判失败。",
-  "source": "control/rules/codecheck-catalog.json",
+  "$comment": "CodeCheck 规则正文与执行分档；guardrails 是唯一来源，其他仓库直接引用本文件。",
+  "scope": [
+    "zone:business"
+  ],
+  "policy": "本文件是 CodeCheck 规则正文与执行方式的唯一来源；使用方直接引用，不再在各自仓库保留副本。",
   "rules": [
     {
       "id": "CC-001",
       "title": "不使用 eval",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`eval` 会把字符串当作代码运行，既难以阅读和静态检查，又可能让外部输入变成可执行代码。解析数据用专门的解析函数，按名称取值用映射表。",
+      "correct": "const settings = JSON.parse(rawSettings);",
+      "incorrect": "const settings = eval(`(${rawSettings})`);",
       "execution": {
         "method": "ESLint `no-eval`"
       },
@@ -15,6 +25,13 @@
       "id": "CC-002",
       "title": "不把字符串当作代码传给定时器",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "向 `setTimeout`、`setInterval` 传字符串时，运行环境会像 `eval` 那样解析并运行它，风险相同。定时器的第一个参数一律传函数。",
+      "correct": "setTimeout(() => refreshBadge(), 300);",
+      "incorrect": "setTimeout('refreshBadge()', 300);",
       "execution": {
         "method": "ESLint `no-implied-eval`"
       },
@@ -24,6 +41,13 @@
       "id": "CC-003",
       "title": "发布的代码不保留调试输出",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`console` 输出多是开发时的临时排查手段，留在产品里会干扰运行环境，还可能暴露内部细节。需要保留的运行信息交给项目统一的日志模块。",
+      "correct": "logger.info('同步完成', { syncedRows: synced.length });",
+      "incorrect": "console.log('同步完成', synced);",
       "execution": {
         "method": "ESLint `no-console`（仅 logger 模块放行：apps/*/src/**/logger.ts、pkgs/*/src/**/logger.ts、tools/logger.mjs）"
       },
@@ -33,6 +57,13 @@
       "id": "CC-004",
       "title": "不使用浏览器原生弹窗",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`alert`、`confirm`、`prompt` 会打断用户操作，样式也不可控，还常被当作临时调试手段。需要提示或确认时，使用应用自己的界面组件。",
+      "correct": "await showNotice('保存成功');",
+      "incorrect": "alert('保存成功');",
       "execution": {
         "method": "ESLint `no-restricted-globals`，含 prompt"
       },
@@ -42,6 +73,13 @@
       "id": "CC-005",
       "title": "不提交 debugger 语句",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`debugger` 会让程序在打开开发者工具时暂停，只适合本地排查。断点应设在调试工具里，提交前确保代码中没有这条语句。",
+      "correct": "const priceWithTax = (net) => {\n  const gross = net * TAX_RATE;\n  return gross;\n};",
+      "incorrect": "const priceWithTax = (net) => {\n  debugger;\n  const gross = net * TAX_RATE;\n  return gross;\n};",
       "execution": {
         "method": "ESLint `no-debugger`（推荐集已含）"
       },
@@ -51,6 +89,12 @@
       "id": "CC-006",
       "title": "尽量不写非空断言",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "后缀 `!` 只是让编译器不再检查空值，运行时的值仍可能缺失。应先做判断，或用可选链和默认值处理缺失的情况。",
+      "correct": "const city = profile.address?.city ?? '未填写';",
+      "incorrect": "const city = profile.address!.city;",
       "execution": {
         "method": "ESLint `@typescript-eslint/no-non-null-assertion`"
       },
@@ -60,6 +104,12 @@
       "id": "CC-007",
       "title": "设默认值时优先用空值合并运算符",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "`||` 遇到 0、`false`、空字符串也会取默认值，这些值有效时就会被覆盖；`??` 只在左侧是 `undefined`、`null` 这类空值时才取默认值。需要保留有效假值的地方应使用 `??`。",
+      "correct": "const retries = config.retries ?? 3;",
+      "incorrect": "const retries = config.retries || 3; // 配置为 0 时仍得到 3",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-nullish-coalescing`（类型感知车道）"
       },
@@ -69,6 +119,12 @@
       "id": "CC-008",
       "title": "用可选链代替逐层判空",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "逐层写 `&&` 判空既冗长又容易漏掉某一层。`?.` 在前面的值为空时直接得到 `undefined`，写法更短也更安全。",
+      "correct": "const zip = order?.shipping?.zip;",
+      "incorrect": "const zip = order && order.shipping && order.shipping.zip;",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-optional-chain`（类型感知车道）"
       },
@@ -78,6 +134,12 @@
       "id": "CC-009",
       "title": "返回 this 的方法以 this 作返回类型",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "链式方法的返回类型若写成类名，子类实例调用后类型会退回父类，子类新增的方法就无法接着调用。声明为 `this` 才能保留调用方的实际类型。",
+      "correct": "class Query {\n  take(size: number): this {\n    this.size = size;\n    return this;\n  }\n}",
+      "incorrect": "class Query {\n  take(size: number): Query {\n    this.size = size;\n    return this;\n  }\n}",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-return-this-type`（类型感知车道）"
       },
@@ -87,6 +149,12 @@
       "id": "CC-010",
       "title": "注释写在代码上方或行尾",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "注释写在被说明代码的上一行时，中间不留空行，缩进保持一致；写在行尾时，与代码至少隔一个空格，内容较长就移到上方。",
+      "correct": "// 汇总本月账单\nconst overall = sumBills(bills); // 单位：分",
+      "incorrect": "// 汇总本月账单\n\nconst overall = sumBills(bills);// 单位：分",
       "execution": {
         "method": "ESLint `aigc/comment-code-gap`"
       },
@@ -96,6 +164,12 @@
       "id": "CC-011",
       "title": "抑制类型检查的指令必须写明原因",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "`@ts-expect-error`、`@ts-ignore`、`@ts-nocheck` 这类指令会关闭编译器检查，维护者需要知道这样做的理由，因此指令后要跟一段说明。",
+      "correct": "// @ts-expect-error: 第三方声明缺少 retries 字段\ndial({ retries: 2 });",
+      "incorrect": "// @ts-expect-error\ndial({ retries: 2 });",
       "execution": {
         "method": "ESLint `@typescript-eslint/ban-ts-comment`，ts-expect-error 须带说明"
       },
@@ -105,6 +179,13 @@
       "id": "CC-012",
       "title": "注释符后留一个空格",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`//`、`/*` 与注释文字之间留一个空格，读起来更清楚。",
+      "correct": "// 重新计算运费",
+      "incorrect": "//重新计算运费",
       "execution": {
         "method": "ESLint `spaced-comment: always`"
       },
@@ -114,6 +195,12 @@
       "id": "CC-013",
       "title": "忽略类型错误时优先用预期错误指令",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "用 `@ts-expect-error` 代替 `@ts-ignore`。前者在下一行其实没有错误时会报告指令未被使用，能及时发现过期的抑制；后者无论有无错误都保持沉默。",
+      "correct": "// @ts-expect-error: 旧接口的参数声明有误\nlegacyPrint(42);",
+      "incorrect": "// @ts-ignore: 旧接口的参数声明有误\nlegacyPrint(42);",
       "execution": {
         "method": "ESLint `@typescript-eslint/ban-ts-comment`：禁 ts-ignore"
       },
@@ -123,6 +210,13 @@
       "id": "CC-014",
       "title": "交付的代码不留 TODO 和 FIXME",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "这类标记在开发阶段可以用来提醒，交付前必须处理完或转入任务跟踪，不能随代码一起发布。",
+      "correct": "// 运费规则见配送模块",
+      "incorrect": "// TODO: 运费规则还没写完",
       "execution": {
         "method": "ESLint `no-warning-comments`"
       },
@@ -132,6 +226,13 @@
       "id": "CC-015",
       "title": "跨窗口通信必须严格核对来源",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`postMessage` 能在不同来源的窗口之间传递数据，目标或来源放得过宽时，恶意页面就能窃听或伪造消息。发送时写明目标来源，不用 `*`；接收时按白名单做完全匹配，不用 `indexOf` 这类部分匹配。",
+      "correct": "frame.postMessage(payload, ALLOWED_ORIGIN);\nwindow.addEventListener('message', (event) => {\n  if (event.origin === ALLOWED_ORIGIN) {\n    applyUpdate(event.data);\n  }\n});",
+      "incorrect": "frame.postMessage(payload, '*');\nwindow.addEventListener('message', (event) => {\n  applyUpdate(event.data);\n});",
       "execution": {
         "method": "ESLint `aigc/postmessage-origin`"
       },
@@ -141,6 +242,13 @@
       "id": "CC-016",
       "title": "switch 要有默认分支",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "没有默认分支时，未预料到的取值会被悄悄忽略。每个 `switch` 都写 `default`；确实无需默认处理时，在最后一个 `case` 下写注释 `// no default` 表明这是有意的。",
+      "correct": "switch (phase) {\n  case 'paid':\n    ship();\n    break;\n  default:\n    hold();\n}",
+      "incorrect": "switch (phase) {\n  case 'paid':\n    ship();\n    break;\n}",
       "execution": {
         "method": "ESLint `default-case`，commentPattern 为 `no default`"
       },
@@ -150,6 +258,13 @@
       "id": "CC-017",
       "title": "有内容的 case 必须显式结束",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "漏写 `break` 时，程序会落入下一个分支，运行本不该运行的代码。每个含语句的 `case` 都要显式结束，也不要故意设计贯穿逻辑。",
+      "correct": "switch (kind) {\n  case 'refund':\n    reverseCharge();\n    break;\n  default:\n    applyCharge();\n}",
+      "incorrect": "switch (kind) {\n  case 'refund':\n    reverseCharge(); // 漏写 break，会继续运行下面的分支\n  default:\n    applyCharge();\n}",
       "execution": {
         "method": "ESLint `no-fallthrough`（推荐集已含）"
       },
@@ -159,6 +274,13 @@
       "id": "CC-018",
       "title": "在 case 中声明变量时用大括号包住",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`let`、`const`、`class` 的作用域是整个 `switch`，却要运行到所在分支才初始化，其他分支访问时就会出错。给该 `case` 加一对大括号，把声明限制在分支内部。",
+      "correct": "switch (unit) {\n  case 'kg': {\n    const grams = weight * 1000;\n    return grams;\n  }\n  default:\n    return weight;\n}",
+      "incorrect": "switch (unit) {\n  case 'kg':\n    const grams = weight * 1000;\n    return grams;\n  default:\n    return weight;\n}",
       "execution": {
         "method": "ESLint `no-case-declarations`（推荐集已含）"
       },
@@ -168,6 +290,13 @@
       "id": "CC-019",
       "title": "else if 链以 else 收尾",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "连续的 `else if` 容易漏掉某些情况。末尾补一个 `else`，像 `switch` 的默认分支那样兜住其余情形。",
+      "correct": "if (score >= 90) {\n  grade = 'A';\n} else if (score >= 60) {\n  grade = 'B';\n} else {\n  grade = 'C';\n}",
+      "incorrect": "if (score >= 90) {\n  grade = 'A';\n} else if (score >= 60) {\n  grade = 'B';\n}",
       "execution": {
         "method": "ESLint `aigc/else-if-else`"
       },
@@ -177,6 +306,13 @@
       "id": "CC-020",
       "title": "不用逻辑运算符代替 if",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "靠短路特性决定是否运行某段代码，读者要多想一步才能看懂。需要条件执行时直接写 `if`。",
+      "correct": "if (hasDraft) {\n  saveDraft();\n}",
+      "incorrect": "hasDraft && saveDraft();",
       "execution": {
         "method": "ESLint `@typescript-eslint/no-unused-expressions`（推荐集默认不允许短路语句），JSX 不受影响"
       },
@@ -186,6 +322,13 @@
       "id": "CC-021",
       "title": "条件表达式里不做赋值",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "在 `if`、`while` 等条件中赋值容易与比较混淆，常常是把 `===` 误写成了 `=`。赋值应放在条件之前。",
+      "correct": "if (quota === ceiling) {\n  enforce();\n}",
+      "incorrect": "if (quota = ceiling) {\n  enforce();\n}",
       "execution": {
         "method": "ESLint `no-cond-assign: always`"
       },
@@ -195,6 +338,13 @@
       "id": "CC-022",
       "title": "控制语句的条件不宜过多",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`if` 或循环的条件堆得太多，既难读又容易改错，建议不超过 3 个。判断细节可以提取为命名清楚的布尔变量或函数。",
+      "correct": "const canShip = stock > 0 && !paused;\nconst isAllowed = buyer.verified && region === 'cn';\nif (canShip && isAllowed) {\n  ship();\n}",
+      "incorrect": "if (stock > 0 && !paused && buyer.verified && region === 'cn') {\n  ship();\n}",
       "execution": {
         "method": "ESLint `aigc/max-conditionals`"
       },
@@ -205,6 +355,13 @@
       "id": "CC-023",
       "title": "用 const 或 let 声明变量，不用 var",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`var` 的作用域是函数而不是代码块，还存在变量提升，容易产生意外。默认用 `const`，只有需要重新赋值时才用 `let`。",
+      "correct": "const batchSize = 20;\nlet offset = 0;\noffset += batchSize;",
+      "incorrect": "var batchSize = 20;\nvar offset = 0;",
       "execution": {
         "method": "ESLint `no-var` + ESLint `prefer-const`"
       },
@@ -214,6 +371,13 @@
       "id": "CC-024",
       "title": "一条语句只声明一个变量",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "把多个变量挤在一条声明里，不便单独加注释或调整，查看改动时也更费力。解构声明和 `for` 初始化部分不受此限。",
+      "correct": "let width = 0;\nlet height = 0;",
+      "incorrect": "let width = 0, height = 0;",
       "execution": {
         "method": "ESLint `one-var: never`，例外 E2"
       },
@@ -223,6 +387,13 @@
       "id": "CC-025",
       "title": "不写连续赋值",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`a = b = c` 这样的写法不易看清赋值顺序，还可能意外创建全局变量。每个变量单独赋值。",
+      "correct": "const low = 0;\nconst high = 0;",
+      "incorrect": "const low = high = 0;",
       "execution": {
         "method": "ESLint `no-multi-assign`"
       },
@@ -232,6 +403,13 @@
       "id": "CC-026",
       "title": "声明变量时不显式赋 undefined",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "未赋值的 `let` 变量本来就是 `undefined`，显式写出来纯属多余。",
+      "correct": "let cached;",
+      "incorrect": "let cached = undefined;",
       "execution": {
         "method": "ESLint `no-undef-init`"
       },
@@ -241,6 +419,13 @@
       "id": "CC-027",
       "title": "用字面量创建数组和对象",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "字面量写法简短、意图清楚，还能避开 `Array` 构造函数在单个数字参数时只创建空位的陷阱。",
+      "correct": "const tags = [];\nconst lookup = {};",
+      "incorrect": "const tags = new Array();\nconst lookup = new Object();",
       "execution": {
         "method": "ESLint `no-array-constructor` + ESLint `no-object-constructor`"
       },
@@ -250,6 +435,13 @@
       "id": "CC-028",
       "title": "内层变量不与外层同名",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "内层声明与外层同名的变量会遮蔽外层变量，读者容易弄错当前用的是哪一个，修改时也容易出错。内层变量应另取名字。",
+      "correct": "const rate = 0.1;\nconst applyCustom = (customRate) => price * customRate;",
+      "incorrect": "const rate = 0.1;\nconst applyCustom = (rate) => price * rate;",
       "execution": {
         "method": "ESLint `@typescript-eslint/no-shadow`"
       },
@@ -259,6 +451,12 @@
       "id": "CC-029",
       "title": "枚举成员显式赋值",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "不赋值的成员按定义顺序从 0 递增，后续插入成员或调整次序就会改变已有成员的值。给每个成员写明取值，含义才不会随顺序变化。",
+      "correct": "enum Channel {\n  Mail = 1,\n  Sms = 2,\n}",
+      "incorrect": "enum Channel {\n  Mail,\n  Sms,\n}",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-enum-initializers`"
       },
@@ -268,6 +466,12 @@
       "id": "CC-030",
       "title": "枚举成员的值用字面量",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "枚举表示一组确定的常量。用变量或函数结果赋值时，取值要到运行时才知道，失去了这种确定性。",
+      "correct": "enum Tier {\n  Basic = 'basic',\n  Pro = 'pro',\n}",
+      "incorrect": "enum Tier {\n  Basic = plans.basic,\n  Pro = plans.pro,\n}",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-literal-enum-member`"
       },
@@ -277,6 +481,13 @@
       "id": "CC-031",
       "title": "规范地抛出和捕获异常",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "只抛出 `Error` 或其子类的实例，并用 `new` 构造，不抛字符串等其他值；内置类型不够用时再自定义错误类型。捕获后确实无需处理的，要写注释说明原因，不留空的 `catch`。",
+      "correct": "throw new RangeError('库存不足');\n\ntry {\n  await flushCache();\n} catch (reason) {\n  // 缓存写入失败不影响主流程，下次启动时会重建\n}",
+      "incorrect": "throw '库存不足';\n\ntry {\n  await flushCache();\n} catch (reason) {}",
       "execution": {
         "method": "ESLint `@typescript-eslint/only-throw-error`（类型感知）+ ESLint `no-empty`"
       },
@@ -286,6 +497,13 @@
       "id": "CC-032",
       "title": "Promise 拒绝时传 Error 对象",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`Error` 对象自带调用栈，排查时能定位拒绝发生的位置；字符串等其他值没有这些信息。",
+      "correct": "return Promise.reject(new Error('网络超时'));",
+      "incorrect": "return Promise.reject('网络超时');",
       "execution": {
         "method": "ESLint `@typescript-eslint/prefer-promise-reject-errors`（类型感知）"
       },
@@ -295,6 +513,13 @@
       "id": "CC-033",
       "title": "finally 块必须正常结束",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "在 `finally` 中使用 `return`、`throw`、`break` 或 `continue`，会覆盖 `try` 和 `catch` 里的返回值或异常，掩盖真实结果。`finally` 只做清理，清理中可能出现的异常也要在内部处理。",
+      "correct": "const readPage = (file) => {\n  try {\n    return file.read();\n  } finally {\n    file.close();\n  }\n};",
+      "incorrect": "const readPage = (file) => {\n  try {\n    return file.read();\n  } finally {\n    throw new Error('关闭失败');\n  }\n};",
       "execution": {
         "method": "ESLint `no-unsafe-finally`（推荐集已含）"
       },
@@ -304,6 +529,13 @@
       "id": "CC-034",
       "title": "比较时变量在左、常量在右",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "把常量写在比较符左边不符合日常语序，读起来别扭。应让会变化的值在左，固定的值在右。",
+      "correct": "if (phase === 'draft') {\n  publish();\n}",
+      "incorrect": "if ('draft' === phase) {\n  publish();\n}",
       "execution": {
         "method": "ESLint `yoda`"
       },
@@ -313,6 +545,13 @@
       "id": "CC-035",
       "title": "用严格相等判断",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`==` 和 `!=` 会先做隐式类型转换，出现空字符串等于 0 这类结果。使用 `===` 和 `!==`，类型和值都一致才成立。需要判空时应覆盖该值可能取到的空值类型。",
+      "correct": "const reached = sold === quota;",
+      "incorrect": "const reached = sold == quota;",
       "execution": {
         "method": "ESLint `eqeqeq: always`"
       },
@@ -322,6 +561,13 @@
       "id": "CC-036",
       "title": "不嵌套三元表达式",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "三元表达式层层嵌套后很难看清分支走向，应改用 `if` 语句或提取函数。",
+      "correct": "const bandOf = (risk) => {\n  if (risk > 9) {\n    return 'high';\n  }\n  return risk > 4 ? 'mid' : 'low';\n};",
+      "incorrect": "const band = risk > 9 ? 'high' : risk > 4 ? 'mid' : 'low';",
       "execution": {
         "method": "ESLint `no-nested-ternary`"
       },
@@ -331,6 +577,13 @@
       "id": "CC-037",
       "title": "混用运算符时用括号表明优先级",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "即使优先级本身没错，不同运算符混在一起时也应加括号，让后来的读者不必回忆优先级表。自增、自减有副作用，也不要和其他运算混在一个表达式里。",
+      "correct": "const canEnter = (isAdmin && hasPass) || isPublic;",
+      "incorrect": "const canEnter = isAdmin && hasPass || isPublic;",
       "execution": {
         "method": "ESLint `no-mixed-operators`（按默认五组：算术、位运算、比较、逻辑、`in`/`instanceof`）；Prettier 会删除冗余括号，修复方式是提取有业务含义的命名中间量"
       },
@@ -340,6 +593,13 @@
       "id": "CC-038",
       "title": "正则中的连续空格写明个数",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "在正则里连续敲多个空格，很难看出到底是几个，也容易打错。应使用量词写明数量。",
+      "correct": "const gap = /tax {4}rate/;",
+      "incorrect": "const gap = /tax    rate/;",
       "execution": {
         "method": "ESLint `no-regex-spaces`（推荐集已含）"
       },
@@ -349,6 +609,12 @@
       "id": "CC-039",
       "title": "正则捕获组尽量命名",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "命名捕获组让匹配结果可以按含义取值，不依赖括号序号，正则调整后也不容易取错。",
+      "correct": "const stamp = /(?<year>\\d{4})-(?<month>\\d{2})/;",
+      "incorrect": "const stamp = /(\\d{4})-(\\d{2})/;",
       "execution": {
         "method": "ESLint `prefer-named-capture-group`"
       },
@@ -358,6 +624,13 @@
       "id": "CC-040",
       "title": "单行不宜过长",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "过长的语句、表达式、参数和注释都要换行，避免阅读时横向滚动。具体行宽以格式化工具的配置为准。",
+      "correct": "",
+      "incorrect": "",
       "execution": {
         "method": "ESLint `max-len`（code 140，字符串与模板字符串计入，忽略 URL 与整行注释）；代码折行仍由 Prettier printWidth 140 负责"
       },
@@ -367,6 +640,13 @@
       "id": "CC-041",
       "title": "折行时运算符放在行尾",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "语句过长需要折行时，把运算符留在上一行末尾，让读者一眼看出下一行是延续。",
+      "correct": "const isReady = hasPayment &&\n  hasAddress;",
+      "incorrect": "const isReady = hasPayment\n  && hasAddress;",
       "execution": {
         "method": "以 Prettier 输出为准（二元运算符换行留在行末）"
       },
@@ -376,6 +656,13 @@
       "id": "CC-042",
       "title": "属性较多的对象字面量逐行书写",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "对象字面量要么全写在一行，要么每个属性各占一行；属性超过 4 个时建议逐行书写。",
+      "correct": "const parcel = {\n  width: 10,\n  height: 20,\n  depth: 5,\n  weight: 2,\n  fragile: true,\n};",
+      "incorrect": "const parcel = { width: 10, height: 20, depth: 5, weight: 2, fragile: true };",
       "execution": {
         "method": "ESLint `aigc/object-props-per-line`"
       },
@@ -385,6 +672,13 @@
       "id": "CC-043",
       "title": "过长的链式调用分行书写",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "一行内连续调用方法不超过 4 次，超过时换行，续行缩进并以 `.` 开头，表明这是同一条调用链。",
+      "correct": "rows\n  .filter(isOpen)\n  .map(toCard)\n  .sort(byDate)\n  .slice(0, 5)\n  .forEach(render);",
+      "incorrect": "rows.filter(isOpen).map(toCard).sort(byDate).slice(0, 5).forEach(render);",
       "execution": {
         "method": "ESLint `aigc/chain-linebreaks`"
       },
@@ -394,6 +688,13 @@
       "id": "CC-044",
       "title": "用空格分隔关键字",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "关键字与括号之间加空格，使代码结构更醒目；函数名与调用括号之间、数组中括号内侧不加空格。",
+      "correct": "if (isLate) {\n  notify([primary, secondary]);\n}",
+      "incorrect": "if(isLate) {\n  notify ([ primary, secondary ]);\n}",
       "execution": {
         "method": "core/format：Prettier"
       },
@@ -403,6 +704,13 @@
       "id": "CC-045",
       "title": "控制语句的执行体都加大括号",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "省略大括号时，后续增加语句很容易落在分支之外，代码也不够清楚。`if`、`for`、`do`、`while` 的执行体一律用大括号包起来。",
+      "correct": "if (isEmpty) {\n  return;\n}",
+      "incorrect": "if (isEmpty) return;",
       "execution": {
         "method": "ESLint `curly: all`"
       },
@@ -412,6 +720,13 @@
       "id": "CC-046",
       "title": "语句末尾写分号",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "依赖自动补分号时，下一行若以括号或方括号开头，就可能和上一行连在一起解析。每条语句都写分号。",
+      "correct": "const overall = base + fee;\n[primary, secondary].forEach(audit);",
+      "incorrect": "const overall = base + fee\n[primary, secondary].forEach(audit); // 会被解析成 fee[...]",
       "execution": {
         "method": "Prettier semi: true"
       },
@@ -421,6 +736,12 @@
       "id": "CC-047",
       "title": "类型中的方法写成函数属性",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "在 `interface` 和 `type` 中统一用属性加函数类型的形式声明方法，风格一致，参数类型的检查也更严格。",
+      "correct": "interface Printer {\n  print: (page: number) => boolean;\n}",
+      "incorrect": "interface Printer {\n  print(page: number): void;\n}",
       "execution": {
         "method": "ESLint `@typescript-eslint/method-signature-style: property`"
       },
@@ -430,6 +751,12 @@
       "id": "CC-048",
       "title": "用 ES 模块组织代码，不用命名空间",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "TypeScript 的 `module` 和 `namespace` 写法已经过时，也不利于构建工具移除无用代码。代码应通过 `import` 和 `export` 组织。",
+      "correct": "// tax.ts\nexport const vat = (net: number) => net * 0.2;",
+      "incorrect": "namespace Tax {\n  export const vat = (net: number) => net * 0.2;\n}",
       "execution": {
         "method": "ESLint `@typescript-eslint/no-namespace`（推荐集已含）"
       },
@@ -439,6 +766,12 @@
       "id": "CC-049",
       "title": "源码函数最多 100 行",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "源码函数（含 TSX）最多 100 行，统计时跳过空行与注释。业务逻辑建议控制在 50 行以内。",
+      "correct": "",
+      "incorrect": "",
       "execution": {
         "method": "项目强制执行：源码用 ESLint `max-lines-per-function: 100`（含 TSX，忽略空行和注释）；测试与 e2e 用 `aigc/function-lines`（平台口径：统计整段函数含参数与返回类型注解，排除嵌套函数）"
       },
@@ -449,6 +782,13 @@
       "id": "CC-050",
       "title": "代码块嵌套不超过 4 层",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "嵌套过深的代码难以阅读和修改。代码块最多嵌套 4 层，超过时用提前返回或提取函数减少层级。",
+      "correct": "for (const batch of batches) {\n  if (batch.done) {\n    continue;\n  }\n  settleBatch(batch);\n}",
+      "incorrect": "for (const batch of batches) {\n  if (!batch.done) {\n    for (const entry of batch.entries) {\n      if (entry.overdue) {\n        if (entry.valid) {\n          settle(entry); // 第 5 层\n        }\n      }\n    }\n  }\n}",
       "execution": {
         "method": "ESLint `max-depth: 4`"
       },
@@ -459,6 +799,13 @@
       "id": "CC-051",
       "title": "回调嵌套不超过 4 层",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "回调一层套一层，代码会迅速变得难读。嵌套不超过 4 层，可改用 `async`/`await` 或把回调提取为命名函数。",
+      "correct": "const session = await login();\nconst cart = await loadCart(session);\nconst bill = await priceCart(cart);\nawait pay(bill);",
+      "incorrect": "login((session) => {\n  loadCart(session, (cart) => {\n    priceCart(cart, (bill) => {\n      pay(bill, (receipt) => {\n        mailReceipt(receipt, () => {\n          finish(); // 第 5 层\n        });\n      });\n    });\n  });\n});",
       "execution": {
         "method": "ESLint `max-nested-callbacks`"
       },
@@ -469,6 +816,13 @@
       "id": "CC-052",
       "title": "带默认值的参数放在最后",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "默认参数排在末尾，调用时才能直接省略；排在前面时仍要为它占位。第三方接口规定的固定签名除外。",
+      "correct": "const paginate = (rows, size = 20) => {\n  return rows.slice(0, size);\n};",
+      "incorrect": "const paginate = (size = 20, rows) => {\n  return rows.slice(0, size);\n};",
       "execution": {
         "method": "ESLint `@typescript-eslint/default-param-last`，例外 E7"
       },
@@ -478,6 +832,13 @@
       "id": "CC-053",
       "title": "函数各路径的返回方式保持一致",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "函数要么所有正常完成路径都返回值，要么都不返回。存在返回值时，无结果的分支须显式返回 `undefined`，同样适用于 React effect 和可选返回类型。",
+      "correct": "const discountOf = (member) => {\n  if (member.vip) {\n    return 0.8;\n  }\n  return 1;\n};",
+      "incorrect": "const discountOf = (member) => {\n  if (member.vip) {\n    return 0.8;\n  }\n};",
       "execution": {
         "method": "ESLint `aigc/consistent-return`"
       },
@@ -487,6 +848,13 @@
       "id": "CC-054",
       "title": "不用 Function 构造函数创建函数",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`new Function` 接受字符串作函数体，与 `eval` 一样有代码注入风险，也绕开了静态检查。应使用箭头函数。",
+      "correct": "const double = (figure) => figure * 2;",
+      "incorrect": "const double = new Function('figure', 'return figure * 2');",
       "execution": {
         "method": "ESLint `no-new-func`"
       },
@@ -496,6 +864,13 @@
       "id": "CC-055",
       "title": "不改写函数参数",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "给参数重新赋值后，读者分不清它是否还是传入的值，还会影响 `arguments`。需要变化时另声明一个局部变量。",
+      "correct": "const clamp = (risk) => {\n  const bounded = Math.min(risk, 10);\n  return bounded;\n};",
+      "incorrect": "const clamp = (risk) => {\n  risk = Math.min(risk, 10);\n  return risk;\n};",
       "execution": {
         "method": "ESLint `no-param-reassign`（props: false）"
       },
@@ -505,6 +880,13 @@
       "id": "CC-056",
       "title": "用 rest 参数代替 arguments",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "rest 参数是真正的数组，可以直接调用数组方法，而 `arguments` 只是类数组，含义也不够明确。rest 参数只能放在参数列表最后。",
+      "correct": "const sumAll = (...amounts) => {\n  return amounts.reduce(plus, 0);\n};",
+      "incorrect": "function sumAll() {\n  return Array.from(arguments).reduce(plus, 0);\n}",
       "execution": {
         "method": "ESLint `prefer-rest-params`"
       },
@@ -514,6 +896,13 @@
       "id": "CC-057",
       "title": "独立函数一律使用箭头函数",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "新增独立函数统一使用箭头函数。改动触及历史 function 声明或表达式的签名或函数体时，同次重构并保持原有调用行为。",
+      "correct": "export const normalizeName = (name) => name.trim();",
+      "incorrect": "export function normalizeName(name) {\n  return name.trim();\n}",
       "execution": {
         "method": "ESLint `aigc/arrow-functions` 、严格回调规则与 CodeCheck 存量触碰检查"
       },
@@ -523,6 +912,13 @@
       "id": "CC-058",
       "title": "只导出不可变的绑定",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "导出 `var` 或 `let` 变量后，它的每次变化都会影响所有引用方，很难追踪。应导出 `const`；确需变化的状态，导出读写它的函数。",
+      "correct": "let revision = 0;\nexport const currentRevision = () => revision;\nexport const bumpRevision = () => {\n  revision += 1;\n};",
+      "incorrect": "export let revision = 0;",
       "execution": {
         "method": "不引入 import 插件，用 ESLint `no-restricted-syntax` 禁 `export let/var`"
       },
@@ -532,6 +928,13 @@
       "id": "CC-059",
       "title": "类和构造函数用大驼峰命名",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "类和构造函数的名字首字母大写，通常是名词或名词短语，如 `Invoice`、`ShoppingCart`，不用动词，也不用含义模糊的泛称。",
+      "correct": "class ShoppingCart {}\nconst cart = new ShoppingCart();",
+      "incorrect": "class shoppingCart {}\nconst cart = new shoppingCart();",
       "execution": {
         "method": "ESLint `@typescript-eslint/naming-convention`：class/type 为 PascalCase"
       },
@@ -541,6 +944,13 @@
       "id": "CC-060",
       "title": "函数用小驼峰命名",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "函数名首字母小写，后续单词首字母大写，通常用动词或动词短语说明它做什么。",
+      "correct": "const calculateShipping = () => {};",
+      "incorrect": "const CALCULATE_SHIPPING = () => {};",
       "execution": {
         "method": "ESLint `@typescript-eslint/naming-convention` 检查函数声明，`aigc/arrow-function-naming` 检查以箭头函数为初始值的变量声明，包含类型断言等透明包装"
       },
@@ -550,6 +960,13 @@
       "id": "CC-061",
       "title": "布尔变量不用否定式命名",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "布尔变量建议以 `is`、`has`、`can`、`should` 等开头，但不要用否定含义的名字，否则 `!isNotVisible` 这样的双重否定很难理解。",
+      "correct": "const isVisible = true;",
+      "incorrect": "const isNotVisible = false;",
       "execution": {
         "method": "ESLint `@typescript-eslint/naming-convention`：布尔变量与参数不用否定式（类型感知）"
       },
@@ -559,6 +976,13 @@
       "id": "CC-062",
       "title": "不用保留字和受限名称命名变量",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "用保留字或 `undefined`、`NaN`、`Infinity` 这类受限名称命名变量，轻则造成混淆，重则导致语法错误。应换一个含义相近的词。",
+      "correct": "const scale = (ratio) => {\n  return ratio * 2;\n};",
+      "incorrect": "const scale = (NaN) => {\n  return NaN * 2;\n};",
       "execution": {
         "method": "ESLint `no-shadow-restricted-names`（推荐集已含）+ `no-restricted-syntax` 禁变量名 short/transient/char/native/final"
       },
@@ -568,6 +992,13 @@
       "id": "CC-063",
       "title": "文件命名统一，扩展名小写",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "项目内的文件名沿用同一种命名风格，扩展名一律小写，避免在区分大小写的系统上找不到文件。",
+      "correct": "// 文件名：invoice-summary.ts",
+      "incorrect": "// 文件名：Invoice_summary.TS",
       "execution": {
         "method": "ESLint `aigc/file-naming`（扩展名小写；文件名小写短横线分段，React 组件允许 PascalCase；生成物 `*.module.d.scss.ts` 放行）"
       },
@@ -577,6 +1008,13 @@
       "id": "CC-064",
       "title": "new 调用始终带括号",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "构造函数没有参数时虽然可以省略括号，但这会让代码风格不统一，因此始终写上括号。",
+      "correct": "const queue = new TaskQueue();",
+      "incorrect": "const queue = new TaskQueue;",
       "execution": {
         "method": "Prettier 统一输出 `new Foo()`"
       },
@@ -586,6 +1024,13 @@
       "id": "CC-065",
       "title": "对象属性名优先用标识符",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "属性名写成标识符更易读，也更利于语法高亮和引擎优化。只有名称中含连字符、空格等字符时才加引号。",
+      "correct": "const sizes = { small: 1, large: 3, 'x-large': 5 };",
+      "incorrect": "const sizes = { 'small': 1, 'large': 3 };",
       "execution": {
         "method": "Prettier quoteProps: as-needed（默认）"
       },
@@ -595,6 +1040,13 @@
       "id": "CC-066",
       "title": "属性访问优先用点号",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "点号简洁易读，也更利于代码压缩。只有属性名是变量或需要计算时才用方括号。",
+      "correct": "const title = book.title;\nconst figure = book[fieldName];",
+      "incorrect": "const title = book['title'];",
       "execution": {
         "method": "ESLint `dot-notation`"
       },
@@ -604,6 +1056,13 @@
       "id": "CC-067",
       "title": "不在实例上直接调用原型的内置方法",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "实例可能有同名属性遮蔽原型方法，也可能根本没有原型。例如服务端解析请求体后直接调用 `hasOwnProperty`，对方传入同名字段就能让程序崩溃。应使用 `Object.hasOwn`，或借助 `call` 调用原型上的方法。",
+      "correct": "const known = Object.hasOwn(payload, 'token');",
+      "incorrect": "const known = payload.hasOwnProperty('token');",
       "execution": {
         "method": "ESLint `no-prototype-builtins`（推荐集已含）"
       },
@@ -613,6 +1072,13 @@
       "id": "CC-068",
       "title": "限定 for-in 的遍历范围",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`for-in` 会连同原型链上继承的可枚举属性一起遍历，可能出现意料之外的键。循环内要过滤掉继承属性，或改用 `Object.keys` 这类只取自身属性的方法。",
+      "correct": "for (const sku of Object.keys(stock)) {\n  restock(sku);\n}",
+      "incorrect": "for (const sku in stock) {\n  restock(sku);\n}",
       "execution": {
         "method": "ESLint `guard-for-in`"
       },
@@ -622,6 +1088,13 @@
       "id": "CC-069",
       "title": "不修改内置对象的原型",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "内置对象是所有代码共用的接口，改动或扩展其原型会破坏约定的行为，还可能与其他库或未来的语言标准冲突。需要新功能时写独立的工具函数。",
+      "correct": "const quarterOf = (date) => {\n  return Math.ceil((date.getMonth() + 1) / 3);\n};",
+      "incorrect": "Date.prototype.quarter = function () {\n  return Math.ceil((this.getMonth() + 1) / 3);\n};",
       "execution": {
         "method": "ESLint `no-extend-native`"
       },
@@ -631,6 +1104,13 @@
       "id": "CC-070",
       "title": "安全用途的随机数必须密码学安全",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`Math.random` 的结果可能被预测，不能用于令牌、密钥、盐值、验证码等安全场景。这些场景要用 `crypto` 提供的安全随机数。",
+      "correct": "const bytes = crypto.getRandomValues(new Uint8Array(16));",
+      "incorrect": "const resetCode = Math.floor(Math.random() * 1000000);",
       "execution": {
         "method": "ESLint `aigc/no-insecure-random`"
       },
@@ -640,6 +1120,13 @@
       "id": "CC-071",
       "title": "废弃代码直接删除，不留成注释",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "注释掉的代码无人维护，日后恢复时容易带入隐患；不会运行到的代码也多半是错误。不用的代码直接删除，需要时从版本历史找回。",
+      "correct": "refreshList();",
+      "incorrect": "refreshList();\n// if (isStale()) {\n//   purgeCache();\n// }",
       "execution": {
         "method": "ESLint `aigc/no-commented-code`"
       },
@@ -649,6 +1136,13 @@
       "id": "CC-072",
       "title": "发布内容不含开发者个人信息",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "发布的代码和注释一旦带有姓名、工号、部门、邮箱、问题单号等，就可能暴露具体人员，带来社会工程攻击的风险。这些信息应在发布前移除。",
+      "correct": "// 按季度汇总退款记录",
+      "incorrect": "// 作者：张三，工号 00123",
       "execution": {
         "method": "ESLint `aigc/no-developer-info`"
       },
@@ -658,6 +1152,13 @@
       "id": "CC-073",
       "title": "代码中不写公网地址",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "代码或脚本里藏着用户不知情的公网 IP 或邮箱，容易引起用户的疑虑。这类地址应放到配置中管理。标准协议必须的地址和广播地址这类特殊地址除外。",
+      "correct": "const endpoint = readConfig('syncHost');",
+      "incorrect": "const endpoint = '198.51.100.24';",
       "execution": {
         "method": "ESLint `aigc/no-public-address`"
       },
@@ -667,26 +1168,44 @@
       "id": "CC-074",
       "title": "源文件统一用 UTF-8 编码",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "所有源文件连同其中的注释都用 UTF-8 保存，避免在不同环境下出现乱码。",
+      "correct": "",
+      "incorrect": "",
       "execution": {
         "method": ".editorconfig charset=utf-8"
       },
-      "category": "covered-by",
-      "reason": ".editorconfig charset=utf-8"
+      "category": "covered-by"
     },
     {
       "id": "CC-075",
       "title": "不使用 with 语句",
       "severity": "必须",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "`with` 内的名称可能指向对象属性，也可能指向局部变量，语义不清，容易改变程序本意，严格模式下也不允许使用。应直接通过对象访问属性。",
+      "correct": "draft.subject = '周报';",
+      "incorrect": "with (draft) {\n  subject = '周报';\n}",
       "execution": {
         "method": "TS 解析与严格模式已拒绝 with"
       },
-      "category": "covered-by",
-      "reason": "TS 解析与严格模式已拒绝 with"
+      "category": "covered-by"
     },
     {
       "id": "CC-076",
       "title": "小数点前后的 0 不省略",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`.5` 和 `5.` 这样的写法里，小数点很容易被看漏，也可能与成员访问混淆。小数点两边都要有数字。",
+      "correct": "const ratio = 0.5;\nconst scale = 2.0;",
+      "incorrect": "const ratio = .5;\nconst scale = 2.;",
       "execution": {
         "method": "Prettier 自动补前导 0、去尾随点，不需要 no-floating-decimal"
       },
@@ -696,6 +1215,12 @@
       "id": "CC-077",
       "title": "类型注解用统一的写法",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "基础类型用小写的 `string`、`number`、`boolean`，不用包装类型。也不用宽泛的 `Function` 和 `{}`：前者失去了参数和返回值检查，连类都能通过；后者实际表示任意非空值，而不是对象。",
+      "correct": "let title: string;\nlet onDone: () => void;\nlet extra: Record<string, unknown>;",
+      "incorrect": "let title: String;\nlet onDone: Function;\nlet extra: {};",
       "execution": {
         "method": "ESLint `@typescript-eslint/no-wrapper-object-types`、no-unsafe-function-type、no-empty-object-type（推荐集已含）"
       },
@@ -705,6 +1230,13 @@
       "id": "CC-078",
       "title": "用 isNaN 判断 NaN",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`NaN` 与任何值都不相等，包括它自身，所以 `value === NaN` 永远为假。判断时要用 `Number.isNaN` 或全局的 `isNaN`。",
+      "correct": "const invalid = Number.isNaN(parsed);",
+      "incorrect": "const invalid = parsed === NaN;",
       "execution": {
         "method": "ESLint `use-isnan`（推荐集已含）"
       },
@@ -714,6 +1246,13 @@
       "id": "CC-079",
       "title": "浮点数不直接判等",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "浮点运算存在精度误差，算出的结果可能与数学上相等的值不同，不能用 `==` 或 `===` 判断。应比较两者之差是否在允许误差内，项目有统一的容差函数时优先使用。固定数值档位的标签可用穷尽的键值映射。",
+      "correct": "const balanced = Math.abs(net + tax - gross) < TOLERANCE;",
+      "incorrect": "const balanced = net + tax === gross;",
       "execution": {
         "method": "ESLint `aigc/no-float-equality`（`==`、`===` 的字面量与行内算术）与 quality C2 评审（`!=`、`!==` 与变量之间的比较）"
       },
@@ -723,6 +1262,12 @@
       "id": "CC-080",
       "title": "类型成员用分号分隔",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "接口、类和类型别名的多行成员都以 `;` 结尾，不用逗号，也不省略。单行声明的最后一个成员可以不写。",
+      "correct": "interface Size {\n  width: number;\n  height: number;\n}",
+      "incorrect": "interface Size {\n  width: number,\n  height: number\n}",
       "execution": {
         "method": "Prettier 输出分号分隔"
       },
@@ -732,6 +1277,13 @@
       "id": "CC-081",
       "title": "字符串优先用单引号",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "全项目统一用单引号，风格一致，字符串里含双引号（如 HTML 属性）时也不必转义。",
+      "correct": "const badge = '<b class=\"mark\">新</b>';",
+      "incorrect": "const badge = \"<b class=\\\"mark\\\">新</b>\";",
       "execution": {
         "method": "Prettier singleQuote"
       },
@@ -741,6 +1293,12 @@
       "id": "CC-082",
       "title": "对象类型优先用 interface",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "描述对象结构时，接口和类型别名作用相近，为统一起见优先用 `interface`。基础类型别名、联合类型、元组这些接口表达不了的，才用 `type`。",
+      "correct": "type Currency = 'cny' | 'usd';\ninterface Price {\n  amount: number;\n  currency: Currency;\n}",
+      "incorrect": "type Price = {\n  amount: number;\n  currency: Currency;\n};",
       "execution": {
         "method": "ESLint `@typescript-eslint/consistent-type-definitions`"
       },
@@ -750,6 +1308,13 @@
       "id": "CC-083",
       "title": "拼接字符串用模板字符串",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "含变量的字符串用模板字符串，比 `+` 拼接更直观，也不容易漏掉空格。",
+      "correct": "const tip = `还剩 ${left} 件`;",
+      "incorrect": "const tip = '还剩 ' + left + ' 件';",
       "execution": {
         "method": "ESLint `prefer-template`"
       },
@@ -759,6 +1324,13 @@
       "id": "CC-084",
       "title": "不用反斜杠续行写字符串",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "行尾用反斜杠接续字符串时，反斜杠后若多一个空格就会出错，而且很难发现。长字符串应分段拼接或使用模板字符串。",
+      "correct": "const notice = '维护结束后页面将恢复，' +\n  '请稍后再试。';",
+      "incorrect": "const notice = '维护结束后页面将恢复，\\\n  请稍后再试。';",
       "execution": {
         "method": "ESLint `no-multi-str`"
       },
@@ -768,6 +1340,12 @@
       "id": "CC-085",
       "title": "可选成员用问号标注，不写 undefined 联合",
       "severity": "建议",
+      "languages": [
+        "TypeScript"
+      ],
+      "summary": "可选成员和可选参数用 `?` 标注即可，不必再联合 `undefined`。类型别名本身也不要包含 `undefined`，确有需要时在使用处联合。",
+      "correct": "interface Ticket {\n  seat?: string;\n}\nfunction book(seat?: string) {}",
+      "incorrect": "interface Ticket {\n  seat: string | undefined;\n}\nfunction book(seat: string | undefined) {}",
       "execution": {
         "method": "ESLint `aigc/prefer-optional-member`；类型别名中的 `| undefined` 由 `no-restricted-syntax` 拦截"
       },
@@ -777,6 +1355,13 @@
       "id": "CC-086",
       "title": "数组只存放按序排列的元素",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "数组虽然也是对象，但给它加非数字属性（`length` 除外）容易出错，也让遍历结果难以预料。需要键值结构时用 `Map` 或普通对象。",
+      "correct": "const prices = new Map();\nprices.set('apple', 5);",
+      "incorrect": "const prices = [];\nprices['apple'] = 5;",
       "execution": {
         "method": "ESLint `aigc/no-array-property`（TS 类型感知；JS 数组字面量；含 computed 字符串字面量键）"
       },
@@ -786,6 +1371,13 @@
       "id": "CC-087",
       "title": "遍历数组优先用数组方法",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "遍历数组优先用 `map`、`filter`、`reduce`、`forEach` 等方法或 `for-of`，不用 `for-in`，后者取到的是字符串下标，还可能带上非数字属性。对性能敏感的热路径可以保留普通 `for` 循环。",
+      "correct": "const subtotal = cart.reduce((acc, entry) => acc + entry.cost, 0);",
+      "incorrect": "let subtotal = 0;\nfor (const idx in cart) {\n  subtotal += cart[idx].cost;\n}",
       "execution": {
         "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知，含索引 for 与 for…in；热路径与 JS 无类型信息时由评审）"
       },
@@ -795,6 +1387,13 @@
       "id": "CC-088",
       "title": "遍历数组时不增删其元素",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "在 `forEach` 等循环中增删元素会打乱下标，导致元素被跳过或重复处理。应先用 `filter` 等生成新数组，或者遍历副本。",
+      "correct": "const active = jobs.filter((job) => !job.canceled);",
+      "incorrect": "jobs.forEach((job, idx) => {\n  if (job.canceled) {\n    jobs.splice(idx, 1);\n  }\n});",
       "execution": {
         "method": "ESLint `aigc/no-array-mutation-in-iteration`（数组方法回调、for…of、按下标遍历的 for 循环）"
       },
@@ -804,6 +1403,13 @@
       "id": "CC-089",
       "title": "用展开语法或 concat 复制数组",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "手写循环逐项复制既冗长又容易出错。用 `[...source]` 或 `concat` 更简洁，得到的都是浅拷贝；按最严口径不再使用 `slice()` 复制。",
+      "correct": "const backup = [...queue];",
+      "incorrect": "const backup = [];\nfor (let idx = 0; idx < queue.length; idx += 1) {\n  backup[idx] = queue[idx];\n}",
       "execution": {
         "method": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制；E9 已按最严口径取消）"
       },
@@ -813,6 +1419,13 @@
       "id": "CC-090",
       "title": "类型转换要写得明确",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`+text`、`~list.indexOf(item)` 这类隐式转换技巧不易读懂，应使用 `Number()`、`String()`、`Boolean()` 或明确的比较。",
+      "correct": "const qty = Number(text);\nconst hasComma = text.includes(',');\nconst codeLabel = String(phase);",
+      "incorrect": "const qty = +text;\nconst hasComma = ~text.indexOf(',');\nconst codeLabel = '' + phase;",
       "execution": {
         "method": "ESLint `no-implicit-coercion`"
       },
@@ -822,6 +1435,13 @@
       "id": "CC-091",
       "title": "转数字时用 Number() 并检查 NaN",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "转换为数字时用 `Number()`，它校验整个字符串，失败时得到 `NaN`，结果要显式检查。减法等隐式转换和只解析前缀的 `parseInt` 都可能得到与预期不符的结果。",
+      "correct": "const width = Number(input);\nif (!Number.isNaN(width)) {\n  resize(width);\n}",
+      "incorrect": "const width = parseInt(input, 10); // '12px' 也会得到 12",
       "execution": {
         "method": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN、isFinite 或 Number.isInteger 检查）"
       },
@@ -831,6 +1451,13 @@
       "id": "CC-092",
       "title": "不在浏览器数据库中存敏感数据",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "Web SQL 和 IndexedDB 的数据以明文落在客户端，本机用户可以读取，XSS 脚本也能操作它们；加密只是把风险转移到密钥上。因此敏感数据不得写入这两类数据库。",
+      "correct": "store.put({ theme: 'dark', rowsPerPage: 20 }, 'prefs');",
+      "incorrect": "store.put({ bankCard: cardNumber, cvv }, 'prefs');",
       "execution": {
         "method": "ESLint `aigc/no-unsafe-storage`"
       },
@@ -840,6 +1467,13 @@
       "id": "CC-093",
       "title": "不在 Web Storage 中存敏感数据",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`localStorage` 和 `sessionStorage` 没有防 XSS 的机制，页面上的脚本都能读取；即使加密，密钥外泄后数据同样失守。口令、令牌等敏感数据不得写入，状态持久化时只保存明确列出的字段。",
+      "correct": "localStorage.setItem('theme', theme);",
+      "incorrect": "localStorage.setItem('sessionToken', sessionToken);",
       "execution": {
         "method": "ESLint `no-restricted-globals` 与 `aigc/no-unsafe-storage`（存储只经 safe-storage）"
       },
@@ -849,16 +1483,29 @@
       "id": "CC-094",
       "title": "谨慎绕过 Angular 的内容净化",
       "severity": "建议",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "Angular 中 `DomSanitizer` 以 `bypassSecurityTrust` 开头的函数（覆盖 HTML、脚本、样式、链接和资源链接）会跳过内置净化，传入不可信内容就有 XSS 风险。优先不用；富文本等确需使用时，必须保证参数来源可信，例如内容已在服务端净化。",
+      "correct": "this.preview = this.sanitizer.sanitize(SecurityContext.HTML, draftHtml);",
+      "incorrect": "this.preview = this.sanitizer.bypassSecurityTrustHtml(draftHtml);",
       "execution": {
         "method": "项目使用 Angular 时核查 DomSanitizer 信任边界；不使用时不适用"
       },
-      "category": "not-applicable",
-      "reason": "本项目不使用该框架，接入方使用该框架时生效"
+      "category": "not-applicable"
     },
     {
       "id": "CC-095",
       "title": "React 中不直接写入 HTML 字符串",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "`dangerouslySetInnerHTML` 把字符串直接写入 DOM，相当于使用 `innerHTML`，内容不可信时会造成 XSS。应让 React 渲染文本或组件。",
+      "correct": "const Note = ({ text }) => <p>{text}</p>;",
+      "incorrect": "const Note = ({ text }) => <p dangerouslySetInnerHTML={{ __html: text }} />;",
       "execution": {
         "method": "ESLint `no-restricted-syntax` 禁 dangerouslySetInnerHTML（不引入 eslint-plugin-react）"
       },
@@ -868,6 +1515,12 @@
       "id": "CC-096",
       "title": "不用外部数据拼接系统命令",
       "severity": "必须",
+      "languages": [
+        "JavaScript"
+      ],
+      "summary": "把不可信数据拼进命令字符串会造成命令注入。能枚举命令和参数时用白名单限定，不能枚举时必须过滤或转义管道、分号、重定向等特殊符号，并优先用 `execFile` 或 `spawn` 以参数数组传入。",
+      "correct": "import { execFile } from 'node:child_process';\n\nexecFile('tar', ['-xf', archivePath]);",
+      "incorrect": "import { exec } from 'node:child_process';\n\nexec(`tar -xf ${archivePath}`);",
       "execution": {
         "method": "ESLint `no-restricted-imports` 禁 child_process 的 exec/execSync（只允许 execFile/spawn）+ security 评审场景 4"
       },
@@ -877,16 +1530,28 @@
       "id": "CC-097",
       "title": "Vue 中不使用 v-html",
       "severity": "必须",
+      "languages": [
+        "JavaScript"
+      ],
+      "summary": "`v-html` 把字符串作为 HTML 直接写入页面，内容不可信时会造成 XSS。优先用文本插值；确需渲染富文本时，必须先净化内容。",
+      "correct": "<p>{{ reviewText }}</p>",
+      "incorrect": "<p v-html=\"reviewText\"></p>",
       "execution": {
         "method": "项目使用 Vue 时核查 v-html；不使用时不适用"
       },
-      "category": "not-applicable",
-      "reason": "本项目不使用该框架，接入方使用该框架时生效"
+      "category": "not-applicable"
     },
     {
       "id": "CC-098",
       "title": "使用 ES6+ 语法并同步重构涉及的旧代码",
       "severity": "必须",
+      "languages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "summary": "新增代码使用项目运行环境与编译目标支持的 ES6（ES2015）及后续标准语法；修改旧代码时同步将所改逻辑及必要依赖中的旧语法重构为语义等价的现代写法。保持 this、arguments、空值判断、异常与异步顺序等行为，不扩大为无关的全仓重写，不使用未支持的提案语法。",
+      "correct": "const greeting = `你好，${name}`;",
+      "incorrect": "var greeting = '你好，' + name;",
       "execution": {
         "method": "quality C2 评审语法选择、旧代码重构范围及语义等价性；已有 ESLint 规则覆盖部分以机检为准"
       },

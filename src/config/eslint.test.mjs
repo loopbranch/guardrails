@@ -58,6 +58,12 @@ test('CodeCheck 数据完整分档', () => {
     return accumulator;
   }, {});
   assert.deepEqual(counts, { defect: 90, metric: 4, 'covered-by': 2, 'not-applicable': 2 });
+  for (const rule of catalog.rules) {
+    assert.ok(rule.languages.length > 0, `${rule.id} 缺少适用语言`);
+    assert.ok(rule.summary.length > 0, `${rule.id} 缺少规则说明`);
+    assert.equal(typeof rule.correct, 'string', `${rule.id} 缺少正确示例`);
+    assert.equal(typeof rule.incorrect, 'string', `${rule.id} 缺少错误示例`);
+  }
   const metrics = catalog.rules.filter((rule) => rule.category === 'metric').map((rule) => rule.metric);
   assert.deepEqual([...new Set(metrics)].sort(), ['condition-width', 'depth', 'function-lines']);
 });

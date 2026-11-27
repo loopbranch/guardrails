@@ -9,6 +9,7 @@ import { postmessageOrigin } from './postmessage-origin.mjs';
 import { noArrayProperty } from './no-array-property.mjs';
 import { noArrayMutationInIteration } from './no-array-mutation-in-iteration.mjs';
 import { arrayCopySpread } from './array-copy-spread.mjs';
+import { fileNaming } from './file-naming.mjs';
 import { numberConversion } from './number-conversion.mjs';
 import { preferOptionalChainStrict } from './prefer-optional-chain-strict.mjs';
 
@@ -111,10 +112,32 @@ describe('公司规范新增机检规则', () => {
     });
   });
 
-  it('G.TYP.09 拦截遍历中增删同一数组', () => {
+  it('G.TYP.09 拦截数组方法与循环遍历中增删同一数组', () => {
     tester.run('no-array-mutation-in-iteration', noArrayMutationInIteration, {
-      valid: ['items.forEach((item) => count.push(item))'],
-      invalid: [{ code: 'items.forEach((item) => items.push(item))', errors: [{ messageId: 'mutate' }] }],
+      valid: [
+        'items.forEach((item) => count.push(item))',
+        'for (const item of items) { count.push(item); }',
+        'for (let i = 0; i < items.length; i += 1) { use(items[i]); }',
+      ],
+      invalid: [
+        { code: 'items.forEach((item) => items.push(item))', errors: [{ messageId: 'mutate' }] },
+        { code: 'for (const item of items) { items.push(item); }', errors: [{ messageId: 'mutate' }] },
+        { code: 'for (let i = 0; i < items.length; i += 1) { items.splice(i, 1); }', errors: [{ messageId: 'mutate' }] },
+      ],
+    });
+  });
+
+  it('G.NAM.07 校验扩展名小写与文件命名风格', () => {
+    tester.run('file-naming', fileNaming, {
+      valid: [
+        { code: 'const value = 1;', filename: 'src/user-profile.ts' },
+        { code: 'const value = 1;', filename: 'src/UserProfile.tsx' },
+        { code: 'const value = 1;', filename: 'src/UserProfile.module.d.scss.ts' },
+      ],
+      invalid: [
+        { code: 'const value = 1;', filename: 'src/user_profile.ts', errors: [{ messageId: 'name' }] },
+        { code: 'const value = 1;', filename: 'src/Foo.TS', errors: [{ messageId: 'extension' }] },
+      ],
     });
   });
 

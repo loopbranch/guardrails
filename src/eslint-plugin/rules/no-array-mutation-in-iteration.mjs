@@ -1,33 +1,48 @@
 /**
  * G.TYP.09：不要在数组遍历中增删其元素。
- * 检查 forEach/map/filter/some/every/reduce 回调体里对同一数组表达式的 push/splice/shift/pop/unshift。
+ * 覆盖数组方法回调、for…of 与按下标遍历的 for 循环；按完整成员链比较，避免把 `files` 与 `group.files` 当成同一数组。
+ * e2e 目录仍放行（联调夹具会直接操纵真实响应数据）。
  */
 const ITERATION_METHODS = new Set(['forEach', 'map', 'filter', 'some', 'every', 'reduce', 'reduceRight', 'flatMap']);
-const MUTATING_METHODS = new Set(['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']);
-const SKIP_FILE = /(?:[\\/]e2e[\\/]|\.(?:test|spec)\.)/u;
+const MUTATING_METHODS = new Set(['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse', 'fill', 'copyWithin']);
+const SKIP_FILE = /[\\/]e2e[\\/]/u;
 
-const receiverName = (node) => {
-  const callee = node.callee;
-  if (callee.type !== 'MemberExpression' || callee.computed) {
+const chainOf = (node) => {
+  if (node === null || node === undefined) {
     return undefined;
   }
-  if (callee.object.type === 'Identifier') {
-    return callee.object.name;
+  if (node.type === 'Identifier') {
+    return node.name;
   }
-  if (callee.object.type === 'MemberExpression' && callee.object.property?.name !== undefined) {
-    return callee.object.property.name;
+  if (node.type === 'ThisExpression') {
+    return 'this';
+  }
+  if (node.type === 'MemberExpression' && !node.computed && node.property.type === 'Identifier') {
+    const object = chainOf(node.object);
+    return object === undefined ? undefined : `${object}.${node.property.name}`;
   }
   return undefined;
 };
 
-const collectMutations = (root) => {
-  const mutations = [];
+const shownName = (chain) => chain.split('.').at(-1);
+
+const mutationChains = (root) => {
+  const chains = [];
   const visit = (node) => {
     if (node === null || node === undefined || typeof node !== 'object') {
       return;
     }
-    if (node.type === 'CallExpression' && MUTATING_METHODS.has(node.callee?.property?.name) && receiverName(node) !== undefined) {
-      mutations.push(receiverName(node));
+    if (node.type === 'CallExpression' && MUTATING_METHODS.has(node.callee?.property?.name)) {
+      const chain = chainOf(node.callee.object);
+      if (chain !== undefined) {
+        chains.push(chain);
+      }
+    }
+    if (node.type === 'AssignmentExpression' && node.left?.type === 'MemberExpression' && node.left.property?.name === 'length') {
+      const chain = chainOf(node.left.object);
+      if (chain !== undefined) {
+        chains.push(chain);
+      }
     }
     for (const key of Object.keys(node)) {
       if (key === 'parent') {
@@ -42,7 +57,23 @@ const collectMutations = (root) => {
     }
   };
   visit(root);
-  return mutations;
+  return chains;
+};
+
+const indexedChain = (node) => {
+  const test = node.test;
+  if (test?.type !== 'BinaryExpression') {
+    return undefined;
+  }
+  for (const side of [test.left, test.right]) {
+    if (side?.type === 'MemberExpression' && !side.computed && side.property?.name === 'length') {
+      const chain = chainOf(side.object);
+      if (chain !== undefined) {
+        return chain;
+      }
+    }
+  }
+  return undefined;
 };
 
 export const noArrayMutationInIteration = {
@@ -56,20 +87,24 @@ export const noArrayMutationInIteration = {
     if (SKIP_FILE.test(context.filename)) {
       return {};
     }
+    const reportIfMutated = (chain, body, node) => {
+      if (chain !== undefined && body !== undefined && mutationChains(body).includes(chain)) {
+        context.report({ node, messageId: 'mutate', data: { name: shownName(chain) } });
+      }
+    };
     return {
       CallExpression(node) {
         const callee = node.callee;
         if (callee.type !== 'MemberExpression' || !ITERATION_METHODS.has(callee.property?.name)) {
           return;
         }
-        const name = receiverName(node);
-        const callback = node.arguments[0];
-        if (name === undefined || callback === undefined) {
-          return;
-        }
-        if (collectMutations(callback).includes(name)) {
-          context.report({ node, messageId: 'mutate', data: { name } });
-        }
+        reportIfMutated(chainOf(callee.object), node.arguments[0], node);
+      },
+      ForOfStatement(node) {
+        reportIfMutated(chainOf(node.right), node.body, node);
+      },
+      ForStatement(node) {
+        reportIfMutated(indexedChain(node), node.body, node);
       },
     };
   },

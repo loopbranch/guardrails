@@ -191,6 +191,8 @@
     "aigc/no-commented-code": "error",
     "aigc/postmessage-origin": "error",
     "aigc/array-copy-spread": "error",
+    "aigc/file-naming": "error",
+    "aigc/no-array-mutation-in-iteration": "error",
     "aigc/no-array-property": "error",
     "aigc/number-conversion": "error",
     "aigc/prefer-array-methods": "error",

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+- 启用 `aigc/no-array-mutation-in-iteration`（G.TYP.09），覆盖数组方法回调、`for…of` 与按下标遍历的 `for` 循环，并识别 `length` 赋值清空。
+- 新增 `aigc/file-naming`（G.NAM.07）：扩展名必须小写；文件名使用小写短横线分段，React 组件文件允许 PascalCase，生成物 `*.module.d.scss.ts` 放行。
+- 公司规范映射：7 条原「仅评审/检查清单」规则改为机检；状态更新为 87 covered / 7 difference / 3 conditional，`review-only` 清零。
+
 ## 0.2.1
 
 - `aigc/no-public-address`：邮箱与 IPv4 都改为逐个匹配判断。修复同一条字符串里「放行域名的邮箱」或「私有网段 IP」掩盖后续真实地址、导致漏报的问题。

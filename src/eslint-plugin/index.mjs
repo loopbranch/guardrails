@@ -17,6 +17,7 @@ import { functionLines } from './rules/function-lines.mjs';
 import { maxConditionals } from './rules/max-conditionals.mjs';
 import { noFloatEquality } from './rules/no-float-equality.mjs';
 import { arrayCopySpread } from './rules/array-copy-spread.mjs';
+import { fileNaming } from './rules/file-naming.mjs';
 import { noArrayMutationInIteration } from './rules/no-array-mutation-in-iteration.mjs';
 import { noArrayProperty } from './rules/no-array-property.mjs';
 import { numberConversion } from './rules/number-conversion.mjs';
@@ -55,6 +56,7 @@ const plugin = {
     'no-unsafe-storage': noUnsafeStorage,
     'postmessage-origin': postmessageOrigin,
     'array-copy-spread': arrayCopySpread,
+    'file-naming': fileNaming,
     'no-array-mutation-in-iteration': noArrayMutationInIteration,
     'no-array-property': noArrayProperty,
     'number-conversion': numberConversion,

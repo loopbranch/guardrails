@@ -590,7 +590,7 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-063",
       "severity": "建议",
-      "mechanism": "建议，不进入评审",
+      "mechanism": "ESLint `aigc/file-naming`（扩展名小写；文件名小写短横线分段，React 组件允许 PascalCase）",
       "status": "covered"
     },
     {
@@ -808,8 +808,8 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-086",
       "severity": "必须",
-      "mechanism": "clean-code 评审",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-array-property`（TS 类型感知；JS 仅同一文件内数组字面量初始化的标识符）",
+      "status": "covered"
     },
     {
       "id": "G.TYP.08",
@@ -817,8 +817,8 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-087",
       "severity": "建议",
-      "mechanism": "clean-code 评审（热路径可保留 for）",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/prefer-array-methods`（TS 类型感知；热路径与 JS 无类型信息时由评审）",
+      "status": "covered"
     },
     {
       "id": "G.TYP.09",
@@ -826,8 +826,8 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-088",
       "severity": "必须",
-      "mechanism": "clean-code 评审",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/no-array-mutation-in-iteration`（数组方法回调、for…of、按下标遍历的 for 循环）",
+      "status": "covered"
     },
     {
       "id": "G.TYP.11",
@@ -835,8 +835,8 @@
       "sections": ["js", "ts"],
       "catalogId": "CC-089",
       "severity": "建议",
-      "mechanism": "clean-code 评审，例外 E9",
-      "status": "review-only"
+      "mechanism": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制，例外 E9）",
+      "status": "covered"
     },
     {
       "id": "G.TYP.14",

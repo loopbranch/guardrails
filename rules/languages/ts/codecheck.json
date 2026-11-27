@@ -106,10 +106,9 @@
       "title": "注释符后留一个空格",
       "severity": "建议",
       "execution": {
-        "method": "建议，不进入评审"
+        "method": "ESLint `spaced-comment: always`"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-013",
@@ -570,10 +569,9 @@
       "title": "文件命名统一，扩展名小写",
       "severity": "建议",
       "execution": {
-        "method": "建议，不进入评审"
+        "method": "ESLint `aigc/file-naming`（扩展名小写；文件名小写短横线分段，React 组件允许 PascalCase；生成物 `*.module.d.scss.ts` 放行）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-064",
@@ -780,40 +778,36 @@
       "title": "数组只存放按序排列的元素",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审"
+        "method": "ESLint `aigc/no-array-property`（TS 类型感知；JS 仅同一文件内数组字面量初始化的标识符）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-087",
       "title": "遍历数组优先用数组方法",
       "severity": "建议",
       "execution": {
-        "method": "clean-code 评审（热路径可保留 for）"
+        "method": "ESLint `aigc/prefer-array-methods`（TS 类型感知；热路径与 JS 无类型信息时由评审）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-088",
       "title": "遍历数组时不增删其元素",
       "severity": "必须",
       "execution": {
-        "method": "clean-code 评审"
+        "method": "ESLint `aigc/no-array-mutation-in-iteration`（数组方法回调、for…of、按下标遍历的 for 循环）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-089",
       "title": "用展开语法或 concat 复制数组",
       "severity": "建议",
       "execution": {
-        "method": "clean-code 评审，例外 E9"
+        "method": "ESLint `aigc/array-copy-spread`（`.slice()` / `.slice(0)` 复制，例外 E9）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-090",
@@ -829,10 +823,9 @@
       "title": "转数字时用 Number() 并检查 NaN",
       "severity": "建议",
       "execution": {
-        "method": "clean-code 评审"
+        "method": "ESLint `aigc/number-conversion`（禁止 parseInt/parseFloat；Number() 结果须有 isNaN 或 isFinite 检查）"
       },
-      "category": "checklist",
-      "reason": "无法机检，输出检查清单，不判失败"
+      "category": "defect"
     },
     {
       "id": "CC-092",
